@@ -10,13 +10,15 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  // const colorScheme = useColorScheme();
-  // const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
+  const colorScheme = useColorScheme();
+  const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
 
   return (
+    <ThemeProvider value={theme}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
       </Stack>
-      // <StatusBar />
+      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+    </ThemeProvider>
   );
 }
