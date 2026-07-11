@@ -1,64 +1,71 @@
-# 15 — Subscription Plans
+# 16 — Admin Panel
 
-## 1. Tier Overview
+The admin panel is a separate web application (React + TypeScript, not React Native), served at `admin.ridingverse.com`, using the same NestJS backend via admin-scoped, RBAC-protected API routes (`/admin/*`).
 
-| Tier | Target Persona | Monthly Price (₹) | Annual Price (₹) |
-|---|---|---|---|
-| Free | All new users | 0 | 0 |
-| Premium | Regular riders wanting more tracking/navigation | 149 | 1,299 |
-| Premium+ | Power users, tourers, track riders | 349 | 2,999 |
-| Family | Households wanting shared safety features | 399 | 3,499 |
-| Club | Riding clubs (organization-level) | 999 (up to 100 members) | 9,999 |
+## 1. Roles & Permissions (RBAC)
 
-## 2. Feature Matrix
+| Role | Access Scope |
+|---|---|
+| Super Admin | Full access, including RBAC management, feature flags, financial data |
+| Moderator | Content moderation queue, user reports, warn/ban actions |
+| Support Agent | Support tickets, read-only user lookup, refund initiation (approval-gated) |
+| Business Manager | Dealer/brand portal oversight, ad campaign approvals |
+| Content Manager (CMS) | CMS content blocks, banners, featured content curation |
+| Finance | Transactions, payouts, subscription/billing reports (read + reconciliation actions) |
+| Analyst | Read-only analytics dashboards |
 
-| Feature | Free | Premium | Premium+ | Family | Club |
-|---|---|---|---|---|---|
-| Ride tracking (count/month) | 10 rides | Unlimited | Unlimited | Unlimited | Unlimited |
-| Ride history retention | 90 days | Unlimited | Unlimited | Unlimited | Unlimited |
-| Live location sharing | Basic (1 contact) | Up to 5 contacts | Unlimited contacts | Unlimited, shared across family | Unlimited |
-| Crash detection | Yes (core safety, always free) | Yes | Yes | Yes | Yes |
-| SOS & emergency contacts | Yes (core safety, always free) | Yes | Yes | Yes | Yes |
-| Offline maps | 1 region | 5 regions | Unlimited regions | Unlimited (shared) | Unlimited |
-| Ad-free experience | No | Yes | Yes | Yes | Yes |
-| Advanced ride stats/analytics | No | Basic | Advanced (heatmaps, trends) | Advanced | Advanced |
-| Route planner (multi-day) | 1 active plan | 5 active plans | Unlimited | Unlimited | Unlimited |
-| AI credits/month (summaries, trip planner, assistant) | 3 | 25 | 100 | 100 shared | 250 |
-| Priority customer support | No | No | Yes | Yes | Yes |
-| Exclusive events access | No | No | Yes (early access) | Yes | Yes (club-hosted priority listing) |
-| Marketplace listing boost | No | 1 free/month | 3 free/month | 3 free/month (shared) | 10 free/month |
-| Cloud storage (photos/videos) | 1 GB | 10 GB | 50 GB | 50 GB shared | 100 GB |
-| Family member slots | — | — | — | Up to 5 | — |
-| Club member management tools | — | — | — | — | Yes (up to 100; scales with add-on) |
-| Club event ticketing fee discount | — | — | — | — | Reduced platform fee (5% vs 8%) |
-| Verified badge eligibility | Manual review | Manual review | Priority review | — | Club verification included |
+## 2. Admin Screen Inventory (25 Screens)
 
-## 3. Billing & Payment Integration
-- **India (default):** Razorpay (UPI, cards, netbanking, wallets) for web/direct billing where app-store policy allows (e.g., club/business web portal); Google Play Billing / Apple IAP mandatory for in-app mobile subscription purchases per store policy.
-- **International (future):** Stripe.
-- Proration handled on upgrade/downgrade; annual plans offer ~2 months free equivalent discount.
-- Grace period of 3 days on payment failure before downgrade to Free tier; retry logic via provider webhooks (BullMQ retry job on `payment.failed` webhook).
+| ID | Route | Purpose |
+|---|---|---|
+| SCR-ADM-001 | /admin/login | Admin login (email/password + 2FA mandatory) |
+| SCR-ADM-002 | /admin/dashboard | Overview KPIs (DAU/MAU, revenue, safety incidents) |
+| SCR-ADM-003 | /admin/users | User search/list |
+| SCR-ADM-004 | /admin/users/:id | User detail (profile, rides, subscription, flags) |
+| SCR-ADM-005 | /admin/users/:id/suspend | Suspend/ban action modal |
+| SCR-ADM-006 | /admin/users/:id/audit-log | Per-user audit trail |
+| SCR-ADM-007 | /admin/content | Content browser (posts/reels/stories) |
+| SCR-ADM-008 | /admin/content/:id | Content detail/action panel |
+| SCR-ADM-009 | /admin/reports | Report inbox (user-submitted reports) |
+| SCR-ADM-010 | /admin/moderation | Moderation queue (see A8 in `08-screen-flow.md`) |
+| SCR-ADM-011 | /admin/safety/sos-monitor | Live SOS event monitor (real-time dashboard) |
+| SCR-ADM-012 | /admin/safety/crash-events | Crash event review/ML feedback tool |
+| SCR-ADM-013 | /admin/clubs | Club directory/verification management |
+| SCR-ADM-014 | /admin/clubs/:id/verify | Club verification review |
+| SCR-ADM-015 | /admin/events | Event oversight (flagged/reported events) |
+| SCR-ADM-016 | /admin/marketplace/listings | Listing moderation queue |
+| SCR-ADM-017 | /admin/marketplace/sellers | Seller verification queue |
+| SCR-ADM-018 | /admin/business | Dealer/brand account management |
+| SCR-ADM-019 | /admin/business/:id/campaigns | Ad campaign approval |
+| SCR-ADM-020 | /admin/cms | CMS content editor |
+| SCR-ADM-021 | /admin/feature-flags | Feature flag management |
+| SCR-ADM-022 | /admin/analytics | Analytics dashboards (drill-down) |
+| SCR-ADM-023 | /admin/finance | Transactions, payouts, reconciliation |
+| SCR-ADM-024 | /admin/support | Support ticket queue |
+| SCR-ADM-025 | /admin/roles | RBAC role/permission management |
 
-## 4. Free-to-Paid Conversion Triggers (In-App)
-- Ride #11 in a month (Free tier limit reached) → contextual upgrade prompt.
-- Attempting to add a 2nd emergency contact beyond Free limit.
-- Attempting to download a 2nd offline map region.
-- Viewing an "Exclusive Event" with a Premium+ lock badge.
-- AI credits exhausted mid-month.
+## 3. Key Admin Workflows
 
-## 5. Family Plan Details
-- Plan owner invites up to 4 additional members via phone number/link.
-- Shared benefits: pooled AI credits, pooled cloud storage, cross-visibility of live-tracking for family members riding (opt-in per ride).
-- Family Safety Dashboard (web + app): view family members' last-known location and ride status at a glance (subject to per-member sharing consent).
+### 3.1 Moderation Workflow
+1. Report or automated flag creates a `moderation_reports` row.
+2. Appears in queue, prioritized by severity (safety/harassment > spam > misc).
+3. Moderator reviews content preview, selects action (Approve/Remove/Warn/Ban/Escalate) with mandatory reason code.
+4. Action logged in `moderation_actions`; audit log entry created; user notified if applicable.
+5. Escalated items route to Super Admin for final review (e.g., legal/safety-sensitive cases).
 
-## 6. Club Plan Details
-- Base tier covers up to 100 members; add-on packs of 100 members at ₹499/month each.
-- Includes: club verification badge, custom club page branding, member role management, dues collection, reduced marketplace/ticketing platform fees.
+### 3.2 SOS/Crash Live Monitor
+- Real-time dashboard (Socket.IO feed) showing active SOS events across the platform, with location on a map, time since trigger, and contact-notification status.
+- Purpose: enables a human safety-ops team (Phase 2+) to intervene (e.g., call local authorities) if automated contact notification doesn't resolve within an SLA window (e.g., 5 minutes).
 
-## 7. Cancellation & Downgrade Policy
-- Self-service cancellation any time; access continues until end of current billing period.
-- Downgrade to Free retains ride history (read-only beyond retention cap) but restricts new usage per Free-tier limits.
-- Data (ride history, garage, documents) is never deleted on downgrade — only feature access is limited (revenue-safe, trust-preserving policy).
+### 3.3 Club/Seller Verification
+- Verification request queue with submitted documents (club registration proof / seller ID proof).
+- Reviewer approves/rejects with notes; approved entities get `is_verified = true` and badge.
 
-## 8. Cross-reference
-Full monetization strategy (marketplace commission, ads, affiliate, etc. beyond subscriptions) is documented in `21-monetization.md`.
+## 4. Admin Panel Non-Functional Requirements
+- Mandatory 2FA for all admin accounts.
+- IP allowlisting option for Super Admin/Finance roles.
+- All admin actions are audit-logged with immutable log storage (append-only table, exported to cold storage periodically).
+- Session timeout: 30 minutes of inactivity for admin panel (stricter than mobile app).
+
+## 5. Tech Stack Note
+- Admin panel: React + TypeScript + Vite, TanStack Query, shadcn/ui-style components, deployed independently (Docker container) behind Cloudflare + Nginx, same auth system but with separate `admin_users` table and stricter session rules.
