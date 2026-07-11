@@ -1,103 +1,70 @@
-# 09 — Navigation Architecture
+# 10 — Design System
 
-## 1. Framework
-Expo Router (file-based routing) with a typed route structure. Root layout uses a stack + bottom tab navigator hybrid.
+## 1. Design Principles
+- **Ride Mode First:** high-contrast, large touch targets (min 48dp), glove-friendly, usable in direct sunlight.
+- **India-first visual language:** vibrant but not gaudy; motorsport-inspired energy (checkered flag accents, tarmac textures) without becoming a racing-only aesthetic.
+- **Trust through clarity:** verified badges, safety states, and payment flows use unambiguous, high-contrast color coding.
 
-## 2. Top-Level Navigation Structure
+## 2. Color Tokens
 
-```
-app/
-  (auth)/
-    splash.tsx
-    onboarding/[step].tsx
-    login.tsx
-    otp.tsx
-    register.tsx
-  (tabs)/
-    index.tsx              -> Home/Feed
-    rides.tsx               -> Ride Planning/History
-    live.tsx                -> Live Ride (center, prominent tab)
-    community.tsx           -> Clubs/Events/Groups
-    marketplace.tsx         -> Marketplace
-    profile.tsx             -> Profile
-  ride/
-    plan/[step].tsx
-    live/[rideId].tsx
-    [rideId]/index.tsx
-    [rideId]/replay.tsx
-  safety/
-    sos.tsx
-    crash-detected.tsx
-    roadside-assistance.tsx
-  clubs/
-    [clubId]/index.tsx
-    [clubId]/members.tsx
-    discover.tsx
-  events/
-    [eventId]/index.tsx
-    create.tsx
-  marketplace/
-    listing/[id].tsx
-    create-listing/[step].tsx
-  learning/
-    course/[id]/lesson/[lessonId].tsx
-  career/
-    roadmap.tsx
-    academies/[id].tsx
-  chat/
-    [conversationId].tsx
-  settings/
-    index.tsx
-    privacy.tsx
-    language.tsx
-  admin/ (web only, separate app shell)
-```
+| Token | Hex | Usage |
+|---|---|---|
+| `--color-primary` | #E8422A (Tarmac Orange) | Primary CTAs, active states |
+| `--color-secondary` | #101820 (Asphalt Black) | Backgrounds, text |
+| `--color-accent` | #FFC93C (Reflector Yellow) | Alerts, badges, highlights |
+| `--color-success` | #1FA96B | Success states, verified badges |
+| `--color-danger` | #D7263D | SOS, crash alerts, destructive actions |
+| `--color-warning` | #F4A63A | Warnings (weather, geofence) |
+| `--color-surface` | #FFFFFF / #1A1F26 (dark) | Cards, sheets |
+| `--color-muted` | #6B7280 | Secondary text |
 
-## 3. Bottom Tab Bar (Primary Navigation)
-1. **Home/Feed** — community feed
-2. **Rides** — planning, history, saved routes
-3. **Live Ride (center, elevated FAB-style tab)** — one-tap start ride / SOS quick access
-4. **Community** — clubs, events, groups, messaging entry
-5. **Profile** — profile, garage, settings entry
+## 3. Typography
+- **Primary typeface:** Inter (UI text), Sora (headings/branding) — both support Latin + Indic script fallback via Noto Sans variants for localization.
+- **Scale:** 12 / 14 / 16 (body) / 20 / 24 / 32 / 40 (display)
+- **Ride Mode scale:** minimum 18px body text, 28px for critical live-ride numerics (speed, distance).
 
-## 4. Navigation Rules
-- **Deep linking:** every shareable entity (ride, post, club, event, listing, profile) has a stable deep link `ridingverse://<module>/<id>` and universal link `https://app.ridingverse.com/<module>/<id>`.
-- **Auth gating:** routes under `(tabs)`, `ride/`, `safety/`, `clubs/`, `marketplace/`, `chat/` require valid session; unauthenticated deep links redirect through login with a return-to redirect param.
-- **Modal vs Stack:** SOS, crash-detected, and checkout flows render as full-screen modals to prevent accidental back-navigation during critical flows.
-- **Back-button behavior:** Android hardware back is intercepted on Live Ride Recording screen — requires explicit "Stop Ride" confirmation rather than default back-navigation.
-- **Tab persistence:** each tab maintains its own navigation stack (nested stack per tab) so switching tabs and returning preserves scroll/state.
+## 4. Spacing & Layout
+- 4px base spacing unit; scale: 4, 8, 12, 16, 24, 32, 48, 64.
+- Safe-area aware layouts for all screens (notch, gesture bar).
+- Card corner radius: 12px standard, 20px for hero/media cards.
 
-## 5. Cross-Module Navigation Flows (Mermaid)
+## 5. Iconography
+- Outline-style icon set (Lucide-based) for standard UI; filled/duotone variant for active/selected tab states.
+- Custom icon set required for: motorcycle types (cruiser, adventure, sportbike, off-road), SOS, crash detection, geofence, badges.
 
-```mermaid
-flowchart LR
-    Feed -->|tap ride card| RideDetail
-    RideDetail -->|tap Start Similar Route| RidePlanner
-    RidePlanner -->|Start Ride| LiveRide
-    LiveRide -->|SOS tap| SOSFlow
-    LiveRide -->|Stop| RideSummary
-    RideSummary -->|Share| Feed
-    ClubHome -->|Create Event| EventCreate
-    EventCreate -->|Publish| EventDetail
-    EventDetail -->|RSVP| Notifications
-    MarketplaceListing -->|Chat with Seller| ChatRoom
-    Profile -->|Garage| GarageHome
-    GarageHome -->|Add Bike| AddBikeFlow
-    CareerRoadmap -->|Contact Academy| AcademyDetail
-    AcademyDetail -->|Message| ChatRoom
-```
+## 6. Component Library (NativeWind + shared primitives)
+- Button (primary/secondary/ghost/destructive, with loading state)
+- Input (text, OTP, phone, search) with validation state styling
+- Card (post card, ride card, listing card, event card, club card)
+- Avatar (with verified badge overlay, online indicator)
+- Bottom Sheet (used for filters, quick actions, SOS confirmation)
+- Map Marker set (rider, hazard, fuel, EV, hotel, mechanic, event)
+- Badge/Chip (status, category, achievement)
+- Skeleton Loader (per card type)
+- Empty State (illustration + message + CTA)
+- Toast/Snackbar (success/error/info)
+- Modal (standard, full-screen critical — SOS/crash)
+- Stepper (onboarding, career roadmap, checkout)
+- Progress Ring (ride stats, course completion)
+- Tab Bar (bottom, and in-page segmented tabs)
 
-## 6. Route Guards & Permissions Matrix
+## 7. Motion & Haptics
+- Reanimated-driven micro-interactions: button press scale (0.97), card entrance fade+slide.
+- Haptic feedback: light impact on toggle/select, medium on primary action confirm, heavy/error pattern on SOS trigger and crash detection.
+- Live tracking marker movement uses smoothed interpolation (no jump snapping) between GPS updates.
 
-| Route Group | Auth Required | Role Required | Notes |
-|---|---|---|---|
-| `(auth)/*` | No | — | Redirects to `(tabs)` if already logged in |
-| `(tabs)/*` | Yes | — | Core app |
-| `safety/*` | Yes | — | Requires emergency contact configured for SOS |
-| `clubs/[id]/settings` | Yes | Club Admin/Moderator | RBAC checked server-side |
-| `admin/*` | Yes | Admin/Moderator/Support | Separate web app, RBAC enforced |
-| `marketplace/create-listing` | Yes | Verified phone | Fraud prevention gate |
+## 8. Dark Mode
+- Full dark mode parity required from MVP (riders frequently use app at night/early morning).
+- Map style switches automatically (day/night Mapbox style) tied to device theme + time-of-day heuristic.
 
-## 7. State Restoration
-- Zustand + MMKV persist last active tab, in-progress ride draft, and unsent chat drafts across app restarts.
-- Live Ride screen restores an in-progress ride session automatically if the app was killed mid-ride (recovery banner: "Resume ride in progress?").
+## 9. Accessibility Tokens
+- Minimum contrast ratio 4.5:1 for body text, 3:1 for large text/icons.
+- All interactive elements have accessible labels (`accessibilityLabel`) mapped to analytics event names for consistency.
+- Dynamic type scaling supported up to 200%.
+
+## 10. Localization Design Considerations
+- Text expansion buffer: layouts must tolerate 30–40% longer text for Hindi/regional scripts vs English.
+- Right-alignment not required (no RTL languages in MVP scope), but component library built RTL-ready for future Urdu/Arabic expansion.
+
+## 11. Brand Assets Checklist
+- Primary logo (light/dark), app icon (adaptive icon for Android), splash logo animation, social share card templates (ride summary, achievement unlock, event invite).
