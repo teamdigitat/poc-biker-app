@@ -9,7 +9,7 @@ Status values: `Backlog` · `Building` · `Done` (Done = shipped in current MVP 
 | Authentication | Phone OTP login | SMS-based OTP login via MSG91/Twilio | Critical | Backlog |
 | Authentication | Google Sign-In | OAuth login via Google | Critical | Backlog |
 | Authentication | Apple Sign-In | OAuth login via Apple (mandatory for iOS) | Critical | Backlog |
-| Authentication | Email/password login | Fallback auth method | High | Backlog |
+| Authentication | Email/password login | Fallback auth method | High | Done |
 | Authentication | Passkey support | WebAuthn-based passwordless login | Medium | Backlog |
 | Authentication | JWT access/refresh tokens | Short-lived access + rotating refresh tokens | Critical | Backlog |
 | Authentication | Device session management | View/revoke active device sessions | High | Backlog |
@@ -265,7 +265,7 @@ Status values: `Backlog` · `Building` · `Done` (Done = shipped in current MVP 
 | Search | Global search | Search users/clubs/posts/marketplace | High | Backlog |
 | Search | Meilisearch-powered instant search | Fast typeahead search | High | Backlog |
 | Notification | Notification preferences | Granular notification controls | High | Backlog |
-| Settings | App settings | Theme, units, privacy, language | High | Backlog |
+| Settings | App settings | Theme, units, privacy, language | High | Done |
 | Localization | Multi-language support | Hindi + regional languages | High | Backlog |
 | Offline | Offline mode | Core features work offline | Critical | Backlog |
 | Developer APIs | Public API (Phase 3) | Third-party developer access | Low | Backlog |
