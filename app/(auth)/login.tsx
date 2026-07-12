@@ -1,159 +1,539 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
+  TextInput as RNTextInput,
   View,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { useAuth } from '@/providers/auth-provider';
 import { useCustomTheme } from '@/providers/theme-provider';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';
+import {
+  Spacing,
+  Radius,
+  FontSizes,
+  Fonts,
+  Elevation,
+} from '@/constants/theme';
+import { Button, TextInput, SegmentedControl, Divider } from '@/components/ui';
 
 export default function LoginScreen() {
   const { login } = useAuth();
   const { theme, colors } = useCustomTheme();
-  
+
+  // Auth Modes
+  const [loginMode, setLoginMode] = useState<'email' | 'phone'>('email');
+
+  // Email/Password States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Phone OTP States
+  const [phone, setPhone] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState(['', '', '', '']);
+  const [countdown, setCountdown] = useState(30);
+  const [otpLoading, setOtpLoading] = useState(false);
+
+  // Global States
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
+
+  const otpRefs = [
+    useRef<RNTextInput>(null),
+    useRef<RNTextInput>(null),
+    useRef<RNTextInput>(null),
+    useRef<RNTextInput>(null),
+  ];
+
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    let timer: any;
+    if (otpSent && countdown > 0) {
+      timer = setTimeout(() => setCountdown(Number(countdown - 1)), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [otpSent, countdown]);
 
   const handleLogin = async () => {
     if (!email || !password) {
       setError('Please fill in all fields.');
       return;
     }
-    
+
     setError(null);
     setLoading(true);
     try {
       await login(email, password);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Login failed. Please check your credentials.';
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Login failed. Please check your credentials.';
       setError(message);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleSendOTP = async () => {
+    if (!phone || phone.length < 10) {
+      setError('Please enter a valid phone number.');
+      return;
+    }
+    setError(null);
+    setOtpLoading(true);
+
+    // Simulate API call to send SMS OTP
+    setTimeout(() => {
+      setOtpLoading(false);
+      setOtpSent(true);
+      setCountdown(30);
+    }, 1500);
+  };
+
+  const handleVerifyOTP = async () => {
+    const code = otpCode.join('');
+    if (code.length < 4) {
+      setError('Please enter the 4-digit verification code.');
+      return;
+    }
+    setError(null);
+    setLoading(true);
+
+    // Mock verification (e.g. 1234 is correct)
+    setTimeout(async () => {
+      if (code === '1234') {
+        try {
+          // Log in with mock credentials
+          await login('demo@ridingverse.com', 'password123');
+        } catch (err: unknown) {
+          setError('Failed to authenticate OTP session.');
+          setLoading(false);
+        }
+      } else {
+        setError('Invalid OTP code. Use "1234" for testing.');
+        setLoading(false);
+      }
+    }, 1500);
+  };
+
+  const handleOtpChange = (text: string, index: number) => {
+    const cleanText = text.replace(/[^0-9]/g, '');
+    const newOtp = [...otpCode];
+    newOtp[index] = cleanText;
+    setOtpCode(newOtp);
+
+    // Move to next input if filled
+    if (cleanText && index < 3) {
+      otpRefs[index + 1].current?.focus();
+    }
+  };
+
+  const handleOtpKeyPress = (e: any, index: number) => {
+    if (e.nativeEvent.key === 'Backspace' && !otpCode[index] && index > 0) {
+      const newOtp = [...otpCode];
+      newOtp[index - 1] = '';
+      setOtpCode(newOtp);
+      otpRefs[index - 1].current?.focus();
+    }
+  };
+
+  const handleSocialLogin = (provider: 'Google' | 'Apple') => {
+    setError(null);
+    setLoading(true);
+    // Simulate social login integration
+    setTimeout(async () => {
+      try {
+        await login('social@ridingverse.com', 'password123');
+      } catch (err) {
+        setError(`Failed to connect with ${provider}.`);
+        setLoading(false);
+      }
+    }, 1500);
+  };
+
   const isDark = theme === 'dark';
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-          <View style={styles.headerContainer}>
-            <View style={[styles.logoBadge, { backgroundColor: colors.surfaceContainerHigh }, Elevation.card]}>
-              <Ionicons name="bicycle" size={40} color={colors.primary} />
-            </View>
-            <Text style={[styles.title, { color: colors.text, fontFamily: Fonts?.display }]}>Riding Verse</Text>
-            <Text style={[styles.subtitle, { color: colors.onSurfaceVariant }]}>
-              Connect with riders worldwide
-            </Text>
-          </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <View style={styles.headerContainer}>
+          <Text style={[styles.title, { color: colors.text, fontFamily: Fonts?.display }]}>RIDING VERSE</Text>
+          <Text style={[styles.subtitle, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>
+            Motorsport & Community hub for riders
+          </Text>
+        </View>
 
-          <View style={[styles.formContainer, { 
-            backgroundColor: colors.surface,
-            borderColor: colors.outlineVariant,
-          }, Elevation.card]}>
-            <Text style={[styles.formTitle, { color: colors.text, fontFamily: Fonts?.display }]}>Sign In</Text>
+          {/* Mode Switcher */}
+          <SegmentedControl
+            items={[
+              { label: 'Email Account', value: 'email' },
+              { label: 'Phone OTP', value: 'phone' },
+            ]}
+            selectedValue={loginMode}
+            onChange={(val) => {
+              setLoginMode(val as 'email' | 'phone');
+              setError(null);
+            }}
+            style={styles.modeSelector}
+          />
+
+          <View
+            style={[
+              styles.formContainer,
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.outlineVariant,
+              },
+              Elevation.card,
+            ]}
+          >
+            <Text
+              style={[
+                styles.formTitle,
+                { color: colors.text, fontFamily: Fonts?.display },
+              ]}
+            >
+              {loginMode === 'email'
+                ? 'Sign In'
+                : otpSent
+                  ? 'Enter Code'
+                  : 'Verify Phone'}
+            </Text>
 
             {error && (
-              <View style={[styles.errorContainer, { backgroundColor: colors.dangerContainer }]}>
-                <Ionicons name="alert-circle" size={20} color={colors.danger} />
-                <Text style={[styles.errorText, { color: colors.danger }]}>{error}</Text>
+              <View
+                style={[
+                  styles.errorContainer,
+                  { backgroundColor: colors.dangerContainer },
+                ]}
+              >
+                <Ionicons name='alert-circle' size={20} color={colors.danger} />
+                <Text
+                  style={[
+                    styles.errorText,
+                    { color: colors.danger, fontFamily: Fonts?.sans },
+                  ]}
+                >
+                  {error}
+                </Text>
               </View>
             )}
 
-            <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Email or Username</Text>
-              <View style={[styles.inputContainer, { 
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="mail-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Enter email or username"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  value={email}
-                  onChangeText={(text) => {
-                    setEmail(text);
-                    setError(null);
-                  }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
-            </View>
-
-            <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Password</Text>
-              <View style={[styles.inputContainer, { 
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="lock-closed-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Enter password"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  secureTextEntry={!showPassword}
-                  value={password}
-                  onChangeText={(text) => {
-                    setPassword(text);
-                    setError(null);
-                  }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Ionicons 
-                    name={showPassword ? "eye-off-outline" : "eye-outline"} 
-                    size={20} 
-                    color={colors.onSurfaceVariant} 
+            {/* Email Mode Form */}
+            {loginMode === 'email' && (
+              <>
+                <View style={styles.inputWrapper}>
+                  <Text
+                    style={[
+                      styles.inputLabel,
+                      {
+                        color: colors.onSurfaceVariant,
+                        fontFamily: Fonts?.sans,
+                      },
+                    ]}
+                  >
+                    Email or Username
+                  </Text>
+                  <TextInput
+                    placeholder='Enter email or username'
+                    value={email}
+                    onChangeText={(text) => {
+                      setEmail(text);
+                      setError(null);
+                    }}
+                    leftIcon='mail-outline'
+                    size='large'
+                    autoCapitalize='none'
+                    autoCorrect={false}
                   />
-                </TouchableOpacity>
-              </View>
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <Text
+                    style={[
+                      styles.inputLabel,
+                      {
+                        color: colors.onSurfaceVariant,
+                        fontFamily: Fonts?.sans,
+                      },
+                    ]}
+                  >
+                    Password
+                  </Text>
+                  <TextInput
+                    placeholder='Enter password'
+                    value={password}
+                    onChangeText={(text) => {
+                      setPassword(text);
+                      setError(null);
+                    }}
+                    leftIcon='lock-closed-outline'
+                    rightIcon={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                    onRightIconPress={() => setShowPassword(!showPassword)}
+                    type={showPassword ? 'text' : 'password'}
+                    size='large'
+                  />
+                </View>
+
+                <Button
+                  onPress={handleLogin}
+                  disabled={loading}
+                  loading={loading}
+                  size='large'
+                  style={{ marginTop: Spacing[4] }}
+                >
+                  Sign In
+                </Button>
+              </>
+            )}
+
+            {/* Phone OTP Mode Form */}
+            {loginMode === 'phone' && (
+              <>
+                {!otpSent ? (
+                  <>
+                    <View style={styles.inputWrapper}>
+                      <Text
+                        style={[
+                          styles.inputLabel,
+                          {
+                            color: colors.onSurfaceVariant,
+                            fontFamily: Fonts?.sans,
+                          },
+                        ]}
+                      >
+                        Phone Number
+                      </Text>
+                      <TextInput
+                        placeholder='Enter 10-digit number'
+                        value={phone}
+                        onChangeText={(text) => {
+                          setPhone(text);
+                          setError(null);
+                        }}
+                        leftIcon='call-outline'
+                        size='large'
+                        keyboardType='phone-pad'
+                        maxLength={10}
+                      />
+                    </View>
+
+                    <Button
+                      onPress={handleSendOTP}
+                      disabled={otpLoading}
+                      loading={otpLoading}
+                      size='large'
+                      style={{ marginTop: Spacing[4] }}
+                    >
+                      Send OTP Code
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.otpInstructionsContainer}>
+                      <Text
+                        style={[
+                          styles.otpInstructionsText,
+                          {
+                            color: colors.onSurfaceVariant,
+                            fontFamily: Fonts?.sans,
+                          },
+                        ]}
+                      >
+                        We sent a 4-digit code to +91 {phone}. Use code{' '}
+                        <Text
+                          style={{ fontWeight: 'bold', color: colors.primary }}
+                        >
+                          1234
+                        </Text>{' '}
+                        for demo.
+                      </Text>
+                    </View>
+
+                    <View style={styles.otpInputsWrapper}>
+                      {otpCode.map((val, idx) => (
+                        <RNTextInput
+                          key={idx}
+                          ref={otpRefs[idx]}
+                          style={[
+                            styles.otpBox,
+                            {
+                              backgroundColor: isDark
+                                ? colors.surfaceContainer
+                                : colors.surface,
+                              borderColor: otpCode[idx]
+                                ? colors.primary
+                                : colors.outline,
+                              color: colors.text,
+                              fontFamily: Fonts?.sans,
+                            },
+                          ]}
+                          keyboardType='number-pad'
+                          maxLength={1}
+                          onChangeText={(text) => handleOtpChange(text, idx)}
+                          onKeyPress={(e) => handleOtpKeyPress(e, idx)}
+                          value={val}
+                          selectTextOnFocus
+                        />
+                      ))}
+                    </View>
+
+                    <View style={styles.resendContainer}>
+                      {countdown > 0 ? (
+                        <Text
+                          style={[
+                            styles.resendTimerText,
+                            {
+                              color: colors.onSurfaceVariant,
+                              fontFamily: Fonts?.sans,
+                            },
+                          ]}
+                        >
+                          Resend code in {countdown}s
+                        </Text>
+                      ) : (
+                        <TouchableOpacity onPress={handleSendOTP}>
+                          <Text
+                            style={[
+                              styles.resendLinkText,
+                              {
+                                color: colors.primary,
+                                fontFamily: Fonts?.sans,
+                              },
+                            ]}
+                          >
+                            Resend OTP Code
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+
+                    <Button
+                      onPress={handleVerifyOTP}
+                      disabled={loading}
+                      loading={loading}
+                      size='large'
+                    >
+                      Verify & Login
+                    </Button>
+
+                    <TouchableOpacity
+                      style={styles.backToPhoneButton}
+                      onPress={() => {
+                        setOtpSent(false);
+                        setOtpCode(['', '', '', '']);
+                        setError(null);
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.backToPhoneText,
+                          {
+                            color: colors.onSurfaceVariant,
+                            fontFamily: Fonts?.sans,
+                          },
+                        ]}
+                      >
+                        Change Phone Number
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </>
+            )}
+
+            {/* Social Logins Section */}
+            <View style={styles.dividerRow}>
+              <Divider style={{ flex: 1 }} />
+              <Text
+                style={[
+                  styles.dividerText,
+                  { color: colors.onSurfaceMuted, fontFamily: Fonts?.sans },
+                ]}
+              >
+                OR CONTINUE WITH
+              </Text>
+              <Divider style={{ flex: 1 }} />
             </View>
 
-            <TouchableOpacity 
-              style={[styles.loginButton, { backgroundColor: colors.primary }, Elevation.card]} 
-              onPress={handleLogin}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color={colors.onPrimary} />
-              ) : (
-                <Text style={[styles.loginButtonText, { color: colors.onPrimary, fontFamily: Fonts?.sans }]}>Sign In</Text>
-              )}
-            </TouchableOpacity>
+            <View style={styles.socialButtonsContainer}>
+              <Button
+                variant='outline'
+                size='large'
+                style={{ flex: 1, borderColor: colors.outline }}
+                textStyle={{ color: colors.text }}
+                leftIcon={
+                  <Ionicons
+                    name='logo-google'
+                    size={20}
+                    color='#EA4335'
+                    style={styles.socialIcon}
+                  />
+                }
+                onPress={() => handleSocialLogin('Google')}
+                disabled={loading}
+              >
+                Google
+              </Button>
 
-            <View style={[styles.linkWrapper, { borderTopColor: colors.outlineVariant }]}>
-              <Text style={[styles.linkText, { color: colors.onSurfaceVariant }]}>
+              <Button
+                variant='outline'
+                size='large'
+                style={{ flex: 1, borderColor: colors.outline }}
+                textStyle={{ color: colors.text }}
+                leftIcon={
+                  <Ionicons
+                    name='logo-apple'
+                    size={20}
+                    color={isDark ? '#FFFFFF' : '#000000'}
+                    style={styles.socialIcon}
+                  />
+                }
+                onPress={() => handleSocialLogin('Apple')}
+                disabled={loading}
+              >
+                Apple
+              </Button>
+            </View>
+
+            <View
+              style={[
+                styles.linkWrapper,
+                { borderTopColor: colors.outlineVariant },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.linkText,
+                  { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans },
+                ]}
+              >
                 Don&apos;t have an account?{' '}
               </Text>
-              <Link href="/register" asChild>
+              <Link href='/register' asChild>
                 <TouchableOpacity>
-                  <Text style={[styles.linkAction, { color: colors.primary }]}>Sign Up</Text>
+                  <Text
+                    style={[
+                      styles.linkAction,
+                      { color: colors.primary, fontFamily: Fonts?.sans },
+                    ]}
+                  >
+                    Sign Up
+                  </Text>
                 </TouchableOpacity>
               </Link>
-            </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -172,7 +552,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    marginBottom: Spacing[8],
+    marginBottom: Spacing[6],
   },
   logoBadge: {
     width: 80,
@@ -184,13 +564,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FontSizes['2xl'],
-    fontWeight: '800',
-    letterSpacing: 0.5,
+    fontWeight: '900',
+    letterSpacing: 1.5,
     marginBottom: Spacing[2],
   },
   subtitle: {
-    fontSize: FontSizes.base,
-    fontWeight: '400',
+    fontSize: FontSizes.sm,
+    textAlign: 'center',
+  },
+  modeSelector: {
+    marginBottom: Spacing[6],
   },
   formContainer: {
     borderRadius: Radius.lg,
@@ -199,7 +582,7 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     fontSize: FontSizes.xl,
-    fontWeight: '700',
+    fontWeight: '800',
     marginBottom: Spacing[6],
   },
   errorContainer: {
@@ -219,45 +602,79 @@ const styles = StyleSheet.create({
     marginBottom: Spacing[4],
   },
   inputLabel: {
-    fontSize: FontSizes.sm,
-    fontWeight: '600',
+    fontSize: FontSizes.xs,
+    fontWeight: '700',
     marginBottom: Spacing[2],
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
   },
-  inputContainer: {
+  otpInstructionsContainer: {
+    marginBottom: Spacing[4],
+    paddingHorizontal: Spacing[1],
+  },
+  otpInstructionsText: {
+    fontSize: FontSizes.sm,
+    lineHeight: 20,
+  },
+  otpInputsWrapper: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: Spacing[4],
+  },
+  otpBox: {
+    width: 60,
+    height: 60,
+    borderWidth: 2,
+    borderRadius: Radius.md,
+    textAlign: 'center',
+    fontSize: FontSizes.xl,
+    fontWeight: '700',
+  },
+  resendContainer: {
     alignItems: 'center',
-    height: 52,
-    borderWidth: 1,
-    borderRadius: Radius.md,
-    paddingHorizontal: Spacing[4],
+    marginBottom: Spacing[4],
   },
-  inputIcon: {
-    marginRight: Spacing[3],
+  resendTimerText: {
+    fontSize: FontSizes.sm,
   },
-  input: {
-    flex: 1,
-    fontSize: FontSizes.base,
-    height: '100%',
+  resendLinkText: {
+    fontSize: FontSizes.sm,
+    fontWeight: '700',
+    textDecorationLine: 'underline',
   },
-  eyeIcon: {
-    padding: Spacing[1],
-  },
-  loginButton: {
-    height: 52,
-    borderRadius: Radius.md,
-    justifyContent: 'center',
+  backToPhoneButton: {
     alignItems: 'center',
     marginTop: Spacing[3],
+    paddingVertical: Spacing[2],
   },
-  loginButtonText: {
-    fontSize: FontSizes.base,
-    fontWeight: '700',
+  backToPhoneText: {
+    fontSize: FontSizes.sm,
+    fontWeight: '600',
+  },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: Spacing[6],
+    gap: Spacing[3],
+  },
+  dividerText: {
+    fontSize: FontSizes.xs,
+    fontWeight: '800',
+    letterSpacing: 1.0,
+  },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    gap: Spacing[4],
+    marginBottom: Spacing[6],
+  },
+  socialIcon: {
+    marginRight: Spacing[1],
   },
   linkWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: Spacing[6],
+    marginTop: Spacing[4],
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: Spacing[4],
   },

@@ -241,9 +241,9 @@ export const Spacing = {
 // 5. Radius
 // ---------------------------------------------------------------------------
 export const Radius = {
-  sm: 8,
-  md: 12, // standard card radius
-  lg: 20, // hero/media card radius
+  sm: 4,
+  md: 6, // standard card radius
+  lg: 12, // hero/media card radius
   full: 999,
 } as const;
 
@@ -255,21 +255,21 @@ export const Elevation = {
   card: Platform.select({
     ios: {
       shadowColor: '#000',
-      shadowOpacity: 0.08,
-      shadowRadius: 8,
-      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.04,
+      shadowRadius: 4,
+      shadowOffset: { width: 0, height: 1 },
     },
-    android: { elevation: 2 },
+    android: { elevation: 1 },
     default: {},
   }),
   modal: Platform.select({
     ios: {
       shadowColor: '#000',
-      shadowOpacity: 0.16,
-      shadowRadius: 16,
-      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.08,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 2 },
     },
-    android: { elevation: 8 },
+    android: { elevation: 4 },
     default: {},
   }),
 } as const;

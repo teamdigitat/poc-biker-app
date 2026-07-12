@@ -1,15 +1,23 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useUITheme } from '../shared';
+import { type BaseComponentProps, useUITheme } from '../shared';
 
-interface DividerProps {
+interface DividerProps extends BaseComponentProps {
   variant?: 'horizontal' | 'vertical';
 }
 
-export const Divider: React.FC<DividerProps> = ({ variant = 'horizontal' }) => {
+export const Divider: React.FC<DividerProps> = ({ variant = 'horizontal', style }) => {
   const { isDark, colors } = useUITheme();
 
-  return <View style={[variant === 'vertical' ? styles.vertical : styles.horizontal, { backgroundColor: isDark ? colors.outline : colors.outlineVariant }]} />;
+  return (
+    <View 
+      style={[
+        variant === 'vertical' ? styles.vertical : styles.horizontal, 
+        { backgroundColor: isDark ? colors.outline : colors.outlineVariant },
+        style
+      ]} 
+    />
+  );
 };
 
 const styles = StyleSheet.create({

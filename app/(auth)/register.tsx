@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { useAuth } from '@/providers/auth-provider';
@@ -16,16 +14,20 @@ import { useCustomTheme } from '@/providers/theme-provider';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';
+import { Button, TextInput } from '@/components/ui';
 
 export default function RegisterScreen() {
   const { register } = useAuth();
   const { theme, colors } = useCustomTheme();
 
+  // Form States
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  // Global States
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -56,24 +58,15 @@ export default function RegisterScreen() {
     }
   };
 
-  const isDark = theme === 'dark';
-
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-          <View style={styles.headerContainer}>
-            <View style={[styles.logoBadge, { backgroundColor: colors.surfaceContainerHigh }, Elevation.card]}>
-              <Ionicons name="bicycle" size={40} color={colors.primary} />
-            </View>
-            <Text style={[styles.title, { color: colors.text, fontFamily: Fonts?.display }]}>Join the Ride</Text>
-            <Text style={[styles.subtitle, { color: colors.onSurfaceVariant }]}>
-              Create your rider profile
-            </Text>
-          </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <View style={styles.headerContainer}>
+          <Text style={[styles.title, { color: colors.text, fontFamily: Fonts?.display }]}>JOIN THE RIDE</Text>
+          <Text style={[styles.subtitle, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>
+            Create your Riding Verse profile
+          </Text>
+        </View>
 
           <View style={[styles.formContainer, {
             backgroundColor: colors.surface,
@@ -84,144 +77,104 @@ export default function RegisterScreen() {
             {error && (
               <View style={[styles.errorContainer, { backgroundColor: colors.dangerContainer }]}>
                 <Ionicons name="alert-circle" size={20} color={colors.danger} />
-                <Text style={[styles.errorText, { color: colors.danger }]}>{error}</Text>
+                <Text style={[styles.errorText, { color: colors.danger, fontFamily: Fonts?.sans }]}>{error}</Text>
               </View>
             )}
 
             {/* Full Name */}
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Full Name</Text>
-              <View style={[styles.inputContainer, {
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="person-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Enter your full name"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  value={fullName}
-                  onChangeText={(text) => { setFullName(text); setError(null); }}
-                  autoCorrect={false}
-                />
-              </View>
+              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>Full Name</Text>
+              <TextInput
+                placeholder="Enter your full name"
+                value={fullName}
+                onChangeText={(text) => { setFullName(text); setError(null); }}
+                leftIcon="person-outline"
+                size="large"
+                autoCorrect={false}
+              />
             </View>
 
             {/* Username */}
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Username</Text>
-              <View style={[styles.inputContainer, {
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="at-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Choose a username"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  value={username}
-                  onChangeText={(text) => { setUsername(text); setError(null); }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
+              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>Username</Text>
+              <TextInput
+                placeholder="Choose a username"
+                value={username}
+                onChangeText={(text) => { setUsername(text); setError(null); }}
+                leftIcon="at-outline"
+                size="large"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
             </View>
 
             {/* Email */}
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Email</Text>
-              <View style={[styles.inputContainer, {
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="mail-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Enter your email"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  value={email}
-                  onChangeText={(text) => { setEmail(text); setError(null); }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                />
-              </View>
+              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>Email</Text>
+              <TextInput
+                placeholder="Enter your email"
+                value={email}
+                onChangeText={(text) => { setEmail(text); setError(null); }}
+                leftIcon="mail-outline"
+                size="large"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+              />
             </View>
 
             {/* Password */}
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Password</Text>
-              <View style={[styles.inputContainer, {
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="lock-closed-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Create a password"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  secureTextEntry={!showPassword}
-                  value={password}
-                  onChangeText={(text) => { setPassword(text); setError(null); }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Ionicons
-                    name={showPassword ? "eye-off-outline" : "eye-outline"}
-                    size={20}
-                    color={colors.onSurfaceVariant}
-                  />
-                </TouchableOpacity>
-              </View>
+              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>Password</Text>
+              <TextInput
+                placeholder="Create a password"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={(text) => { setPassword(text); setError(null); }}
+                leftIcon="lock-closed-outline"
+                rightIcon={showPassword ? "eye-off-outline" : "eye-outline"}
+                onRightIconPress={() => setShowPassword(!showPassword)}
+                type={showPassword ? "text" : "password"}
+                size="large"
+              />
             </View>
 
             {/* Confirm Password */}
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Confirm Password</Text>
-              <View style={[styles.inputContainer, {
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="shield-checkmark-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
-                  placeholder="Confirm your password"
-                  placeholderTextColor={colors.onSurfaceMuted}
-                  secureTextEntry={!showPassword}
-                  value={confirmPassword}
-                  onChangeText={(text) => { setConfirmPassword(text); setError(null); }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
+              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>Confirm Password</Text>
+              <TextInput
+                placeholder="Confirm your password"
+                secureTextEntry={!showPassword}
+                value={confirmPassword}
+                onChangeText={(text) => { setConfirmPassword(text); setError(null); }}
+                leftIcon="shield-checkmark-outline"
+                type={showPassword ? "text" : "password"}
+                size="large"
+              />
             </View>
 
-            <TouchableOpacity
-              style={[styles.registerButton, { backgroundColor: colors.primary }, Elevation.card]}
+            <Button
               onPress={handleRegister}
               disabled={loading}
+              loading={loading}
+              size="large"
+              style={{ marginTop: Spacing[4] }}
             >
-              {loading ? (
-                <ActivityIndicator size="small" color={colors.onPrimary} />
-              ) : (
-                <Text style={[styles.registerButtonText, { color: colors.onPrimary, fontFamily: Fonts?.sans }]}>Create Account</Text>
-              )}
-            </TouchableOpacity>
+              Create Account
+            </Button>
 
             <View style={[styles.linkWrapper, { borderTopColor: colors.outlineVariant }]}>
-              <Text style={[styles.linkText, { color: colors.onSurfaceVariant }]}>
+              <Text style={[styles.linkText, { color: colors.onSurfaceVariant, fontFamily: Fonts?.sans }]}>
                 Already have an account?{' '}
               </Text>
               <Link href="/login" asChild>
                 <TouchableOpacity>
-                  <Text style={[styles.linkAction, { color: colors.primary }]}>Sign In</Text>
+                  <Text style={[styles.linkAction, { color: colors.primary, fontFamily: Fonts?.sans }]}>Sign In</Text>
                 </TouchableOpacity>
               </Link>
-            </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -240,7 +193,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    marginBottom: Spacing[8],
+    marginBottom: Spacing[6],
   },
   logoBadge: {
     width: 80,
@@ -252,13 +205,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FontSizes['2xl'],
-    fontWeight: '800',
-    letterSpacing: 0.5,
+    fontWeight: '900',
+    letterSpacing: 1.5,
     marginBottom: Spacing[2],
   },
   subtitle: {
-    fontSize: FontSizes.base,
-    fontWeight: '400',
+    fontSize: FontSizes.sm,
+    textAlign: 'center',
   },
   formContainer: {
     borderRadius: Radius.lg,
@@ -267,7 +220,7 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     fontSize: FontSizes.xl,
-    fontWeight: '700',
+    fontWeight: '800',
     marginBottom: Spacing[6],
   },
   errorContainer: {
@@ -287,39 +240,11 @@ const styles = StyleSheet.create({
     marginBottom: Spacing[4],
   },
   inputLabel: {
-    fontSize: FontSizes.sm,
-    fontWeight: '600',
-    marginBottom: Spacing[2],
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 52,
-    borderWidth: 1,
-    borderRadius: Radius.md,
-    paddingHorizontal: Spacing[4],
-  },
-  inputIcon: {
-    marginRight: Spacing[3],
-  },
-  input: {
-    flex: 1,
-    fontSize: FontSizes.base,
-    height: '100%',
-  },
-  eyeIcon: {
-    padding: Spacing[1],
-  },
-  registerButton: {
-    height: 52,
-    borderRadius: Radius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: Spacing[3],
-  },
-  registerButtonText: {
-    fontSize: FontSizes.base,
+    fontSize: FontSizes.xs,
     fontWeight: '700',
+    marginBottom: Spacing[2],
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
   },
   linkWrapper: {
     flexDirection: 'row',

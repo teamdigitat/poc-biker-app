@@ -8,9 +8,10 @@ This is the practical, code-facing companion to `docs/10-design-system.md`. That
 
 **Tarmac Orange energy on an Asphalt Black base** — motorsport-inspired, legible in direct sunlight, usable with gloves. Not a generic Material Design blue app, not a lifestyle-influencer pastel app.
 
-## 2. The Golden Rule
+## 2. The Golden Rules
 
-> **Never write a raw hex value, raw px number, or raw font name in a component.** Always import from `theme.ts` (`Colors`, `Spacing`, `Radius`, `Fonts`, `FontSizes`, `Elevation`).
+1. **Never write a raw hex value, raw px number, or raw font name in a component.** Always import from `theme.ts` (`Colors`, `Spacing`, `Radius`, `Fonts`, `FontSizes`, `Elevation`).
+2. **Always use reusable UI components.** If a needed component is not available or lacks features, enhance the existing one or create a new one inside `components/ui/` instead of writing custom inline elements.
 
 ```tsx
 // ❌ Don't
@@ -90,7 +91,7 @@ function useTheme() {
 ## 5. Spacing & Radius
 
 - Spacing is strictly 4px-based: `Spacing[1]` = 4, `Spacing[4]` = 16, etc. Never use an arbitrary number like `padding: 13`.
-- Radius: `Radius.sm` (8) for chips/inputs, `Radius.md` (12) for standard cards, `Radius.lg` (20) for hero/media cards (event banners, club covers).
+- Radius: `Radius.sm` (4) for chips/inputs, `Radius.md` (6) for standard cards, `Radius.lg` (12) for hero/media cards (event banners, club covers).
 
 ```tsx
 <View
