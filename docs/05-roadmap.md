@@ -3,6 +3,7 @@
 Legend: **MVP** (Months 0–6) · **Phase 2** (Months 7–14) · **Phase 3** (Months 15–24) · **Future Vision** (24+ months)
 
 ## MVP (Months 0–6) — "Foundation: Safety + Ride + Community Core"
+
 - Authentication (Phone OTP, Google, Apple, Email, device sessions)
 - Profile & Garage (motorcycle profile, basic maintenance reminders)
 - Ride Planning (manual route creation, GPX import/export, fuel stop suggestions)
@@ -15,6 +16,7 @@ Legend: **MVP** (Months 0–6) · **Phase 2** (Months 7–14) · **Phase 3** (Mo
 - Admin Panel v1 (user/content moderation, basic analytics)
 
 ## Phase 2 (Months 7–14) — "Community Depth + Marketplace + Learning"
+
 - Stories & Reels
 - Club Management (roles, membership tiers, dues)
 - Event Ticketing & Payments
@@ -29,6 +31,7 @@ Legend: **MVP** (Months 0–6) · **Phase 2** (Months 7–14) · **Phase 3** (Mo
 - Localization (5 Indian languages)
 
 ## Phase 3 (Months 15–24) — "Motorsport Pathway + AI + Scale"
+
 - MotoGP Career Roadmap (full age/country-wise pathway, academy directory, cost estimator)
 - Race Results & Training Institute integrations
 - AI Ride Summaries, AI Trip Planner, AI Mechanical Assistant, AI Road Safety Tips
@@ -41,6 +44,7 @@ Legend: **MVP** (Months 0–6) · **Phase 2** (Months 7–14) · **Phase 3** (Mo
 - International pilot market (e.g., Nepal/Sri Lanka or SE Asia)
 
 ## Future Vision (24+ months)
+
 - AI Ride Coach & Predictive Maintenance
 - Smart Helmet HUD / AR Navigation integrations
 - Dashcam AI & Road Hazard AI (auto-tagging from video)
@@ -75,6 +79,7 @@ gantt
 ```
 
 ## Release Cadence
+
 - 2-week sprint cycles, monthly production releases for MVP/Phase 2.
 - Feature flags (see `17-security.md` / infra) allow staged rollout and city-by-city gating.
 - Full release governance in `22-release-plan.md`.

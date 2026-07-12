@@ -1,6 +1,11 @@
-import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { type BaseComponentProps, useUITheme, Spacing, Radius } from '../shared';
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  type BaseComponentProps,
+  useUITheme,
+  Spacing,
+  Radius,
+} from "../shared";
 
 interface SegmentedControlProps extends BaseComponentProps {
   items: { label: string; value: string; disabled?: boolean }[];
@@ -8,11 +13,22 @@ interface SegmentedControlProps extends BaseComponentProps {
   onChange?: (value: string) => void;
 }
 
-export const SegmentedControl: React.FC<SegmentedControlProps> = ({ items, selectedValue, onChange, style }) => {
+export const SegmentedControl: React.FC<SegmentedControlProps> = ({
+  items,
+  selectedValue,
+  onChange,
+  style,
+}) => {
   const { colors } = useUITheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surfaceContainer }, style]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.surfaceContainer },
+        style,
+      ]}
+    >
       {items.map((item) => {
         const selected = item.value === selectedValue;
         return (
@@ -26,7 +42,14 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({ items, selec
               item.disabled && { opacity: 0.5 },
             ]}
           >
-            <Text style={[styles.label, { color: selected ? colors.onPrimary : colors.text }]}>{item.label}</Text>
+            <Text
+              style={[
+                styles.label,
+                { color: selected ? colors.onPrimary : colors.text },
+              ]}
+            >
+              {item.label}
+            </Text>
           </Pressable>
         );
       })}
@@ -36,7 +59,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({ items, selec
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: Radius.full,
     padding: Spacing[1],
     gap: Spacing[1],
@@ -45,11 +68,11 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: Radius.full,
     paddingVertical: Spacing[2],
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   label: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

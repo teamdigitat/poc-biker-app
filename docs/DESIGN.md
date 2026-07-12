@@ -1,96 +1,96 @@
 ---
 name: Riding Verse Design System
 colors:
-  surface: '#131313'
-  surface-dim: '#131313'
-  surface-bright: '#393939'
-  surface-container-lowest: '#0e0e0e'
-  surface-container-low: '#1c1b1b'
-  surface-container: '#201f1f'
-  surface-container-high: '#2a2a2a'
-  surface-container-highest: '#353534'
-  on-surface: '#e5e2e1'
-  on-surface-variant: '#e4beb4'
-  inverse-surface: '#e5e2e1'
-  inverse-on-surface: '#313030'
-  outline: '#ab8980'
-  outline-variant: '#5b4039'
-  surface-tint: '#ffb5a0'
-  primary: '#ffb5a0'
-  on-primary: '#5f1500'
-  primary-container: '#ff5722'
-  on-primary-container: '#541200'
-  inverse-primary: '#b02f00'
-  secondary: '#fff3d2'
-  on-secondary: '#3a3000'
-  secondary-container: '#fdd400'
-  on-secondary-container: '#6f5c00'
-  tertiary: '#00daf3'
-  on-tertiary: '#00363d'
-  tertiary-container: '#00a0b3'
-  on-tertiary-container: '#002f36'
-  error: '#ffb4ab'
-  on-error: '#690005'
-  error-container: '#93000a'
-  on-error-container: '#ffdad6'
-  primary-fixed: '#ffdbd1'
-  primary-fixed-dim: '#ffb5a0'
-  on-primary-fixed: '#3b0900'
-  on-primary-fixed-variant: '#862200'
-  secondary-fixed: '#ffe170'
-  secondary-fixed-dim: '#e9c400'
-  on-secondary-fixed: '#221b00'
-  on-secondary-fixed-variant: '#544600'
-  tertiary-fixed: '#9cf0ff'
-  tertiary-fixed-dim: '#00daf3'
-  on-tertiary-fixed: '#001f24'
-  on-tertiary-fixed-variant: '#004f58'
-  background: '#131313'
-  on-background: '#e5e2e1'
-  surface-variant: '#353534'
+  surface: "#131313"
+  surface-dim: "#131313"
+  surface-bright: "#393939"
+  surface-container-lowest: "#0e0e0e"
+  surface-container-low: "#1c1b1b"
+  surface-container: "#201f1f"
+  surface-container-high: "#2a2a2a"
+  surface-container-highest: "#353534"
+  on-surface: "#e5e2e1"
+  on-surface-variant: "#e4beb4"
+  inverse-surface: "#e5e2e1"
+  inverse-on-surface: "#313030"
+  outline: "#ab8980"
+  outline-variant: "#5b4039"
+  surface-tint: "#ffb5a0"
+  primary: "#ffb5a0"
+  on-primary: "#5f1500"
+  primary-container: "#ff5722"
+  on-primary-container: "#541200"
+  inverse-primary: "#b02f00"
+  secondary: "#fff3d2"
+  on-secondary: "#3a3000"
+  secondary-container: "#fdd400"
+  on-secondary-container: "#6f5c00"
+  tertiary: "#00daf3"
+  on-tertiary: "#00363d"
+  tertiary-container: "#00a0b3"
+  on-tertiary-container: "#002f36"
+  error: "#ffb4ab"
+  on-error: "#690005"
+  error-container: "#93000a"
+  on-error-container: "#ffdad6"
+  primary-fixed: "#ffdbd1"
+  primary-fixed-dim: "#ffb5a0"
+  on-primary-fixed: "#3b0900"
+  on-primary-fixed-variant: "#862200"
+  secondary-fixed: "#ffe170"
+  secondary-fixed-dim: "#e9c400"
+  on-secondary-fixed: "#221b00"
+  on-secondary-fixed-variant: "#544600"
+  tertiary-fixed: "#9cf0ff"
+  tertiary-fixed-dim: "#00daf3"
+  on-tertiary-fixed: "#001f24"
+  on-tertiary-fixed-variant: "#004f58"
+  background: "#131313"
+  on-background: "#e5e2e1"
+  surface-variant: "#353534"
 typography:
   display-lg:
     fontFamily: Montserrat
     fontSize: 48px
-    fontWeight: '800'
+    fontWeight: "800"
     lineHeight: 56px
     letterSpacing: -0.02em
   headline-lg:
     fontFamily: Montserrat
     fontSize: 32px
-    fontWeight: '700'
+    fontWeight: "700"
     lineHeight: 40px
   headline-lg-mobile:
     fontFamily: Montserrat
     fontSize: 28px
-    fontWeight: '700'
+    fontWeight: "700"
     lineHeight: 34px
   ride-mode-stat:
     fontFamily: Space Grotesk
     fontSize: 64px
-    fontWeight: '700'
+    fontWeight: "700"
     lineHeight: 64px
     letterSpacing: -0.04em
   body-lg:
     fontFamily: Inter
     fontSize: 18px
-    fontWeight: '400'
+    fontWeight: "400"
     lineHeight: 28px
   body-md:
     fontFamily: Inter
     fontSize: 16px
-    fontWeight: '400'
+    fontWeight: "400"
     lineHeight: 24px
   label-caps:
     fontFamily: Space Grotesk
     fontSize: 12px
-    fontWeight: '600'
+    fontWeight: "600"
     lineHeight: 16px
     letterSpacing: 0.1em
   regional-indicator:
     fontFamily: Inter
     fontSize: 14px
-    fontWeight: '500'
+    fontWeight: "500"
     lineHeight: 20px
 rounded:
   sm: 0.125rem
@@ -129,9 +129,9 @@ This design system utilizes a **Dark Mode Default** palette optimized for high-g
 
 ## Typography
 
-The typography strategy balances aggressive brand presence with utilitarian clarity. 
+The typography strategy balances aggressive brand presence with utilitarian clarity.
 
-- **Montserrat** is used for headlines to convey a sense of strength and geometric precision. 
+- **Montserrat** is used for headlines to convey a sense of strength and geometric precision.
 - **Inter** handles all body copy and functional UI text, chosen for its exceptional legibility and support for various weights.
 - **Space Grotesk** is introduced for technical labels and "Ride Mode" statistics, offering a futuristic, monospaced-adjacent feel that aids in quick numerical recognition.
 
@@ -169,22 +169,27 @@ Iconography must be "thick-stroked" (2px minimum) with slightly rounded terminal
 ## Components
 
 ### Buttons
+
 - **Primary:** Solid Electric Orange with black text. 56px height.
 - **Secondary:** Transparent with Safety Yellow 2px border.
 - **SOS:** Massive, circular floating action button (FAB) with a pulsing red outer ring. Requires a "Long Press" (2 seconds) to activate to prevent false triggers during rides.
 
 ### Garage Dashboard
-- Cards should feature high-quality "cut-out" PNGs of the user's motorcycle. 
+
+- Cards should feature high-quality "cut-out" PNGs of the user's motorcycle.
 - Technical stats (Fuel, Oil, Battery) use progress bars in Tertiary Cyan.
 
 ### Input Fields
-- Dark grey fills with "bottom-border only" when inactive, shifting to full Safety Yellow outlines when focused. 
+
+- Dark grey fills with "bottom-border only" when inactive, shifting to full Safety Yellow outlines when focused.
 - Large numeric keypads for PIN/Odometer entries.
 
 ### Ride Mode Feed
-- Simplified navigation cards with "Next Turn" icons at 80x80px size. 
+
+- Simplified navigation cards with "Next Turn" icons at 80x80px size.
 - High-contrast text labels with zero unnecessary ornamentation.
 
 ### Community Feed
-- Image-heavy cards with "Join Ride" buttons anchored to the bottom. 
+
+- Image-heavy cards with "Join Ride" buttons anchored to the bottom.
 - Regional language tags shown as small, high-contrast chips in the top right corner of cards.

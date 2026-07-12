@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import { useAuthStore } from '../store/auth-store';
+import React, { createContext, useContext } from "react";
+import { useAuthStore } from "../store/auth-store";
 
 interface User {
   id: string;
@@ -15,14 +15,22 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (emailOrUsername: string, password: string) => Promise<void>;
-  register: (email: string, username: string, fullName: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    fullName: string,
+    password: string,
+  ) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, token, isLoading, hasHydrated, login, register, logout } = useAuthStore();
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { user, token, isLoading, hasHydrated, login, register, logout } =
+    useAuthStore();
 
   const isAuthenticated = !!token;
   const isStateLoading = isLoading || !hasHydrated;
@@ -47,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

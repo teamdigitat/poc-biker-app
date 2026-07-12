@@ -1,9 +1,24 @@
-import React from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
-import { type BaseComponentProps, type UISize, type UIState, useUITheme, Spacing, Radius, FontSizes, Fonts } from '../shared';
+import React from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import {
+  type BaseComponentProps,
+  type UISize,
+  type UIState,
+  useUITheme,
+  Spacing,
+  Radius,
+  FontSizes,
+  Fonts,
+} from "../shared";
 
 interface ButtonProps extends BaseComponentProps {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'text' | 'danger';
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "text" | "danger";
   size?: UISize;
   state?: UIState;
   disabled?: boolean;
@@ -14,9 +29,9 @@ interface ButtonProps extends BaseComponentProps {
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
-  size = 'medium',
-  state = 'default',
+  variant = "primary",
+  size = "medium",
+  state = "default",
   disabled = false,
   loading = false,
   onPress,
@@ -28,35 +43,36 @@ export const Button: React.FC<ButtonProps> = ({
   accessibilityLabel,
 }) => {
   const { colors } = useUITheme();
-  const resolvedState = disabled || state === 'disabled' ? 'disabled' : loading ? 'loading' : state;
+  const resolvedState =
+    disabled || state === "disabled" ? "disabled" : loading ? "loading" : state;
 
   const containerStyle = [
     styles.base,
     styles[size],
-    variant === 'primary' && { backgroundColor: colors.primary },
-    variant === 'secondary' && { backgroundColor: colors.secondaryContainer },
-    variant === 'outline' && {
-      backgroundColor: 'transparent',
+    variant === "primary" && { backgroundColor: colors.primary },
+    variant === "secondary" && { backgroundColor: colors.secondaryContainer },
+    variant === "outline" && {
+      backgroundColor: "transparent",
       borderWidth: 1,
       borderColor: colors.primary,
     },
-    variant === 'ghost' && {
-      backgroundColor: 'transparent',
+    variant === "ghost" && {
+      backgroundColor: "transparent",
     },
-    variant === 'text' && {
-      backgroundColor: 'transparent',
+    variant === "text" && {
+      backgroundColor: "transparent",
       paddingHorizontal: 0,
       paddingVertical: 0,
     },
-    variant === 'danger' && { backgroundColor: colors.danger },
-    resolvedState === 'disabled' && { opacity: 0.55 },
+    variant === "danger" && { backgroundColor: colors.danger },
+    resolvedState === "disabled" && { opacity: 0.55 },
     style,
   ];
 
   const labelColor =
-    variant === 'outline' || variant === 'ghost' || variant === 'text'
+    variant === "outline" || variant === "ghost" || variant === "text"
       ? colors.primary
-      : variant === 'danger'
+      : variant === "danger"
         ? colors.onDanger
         : colors.onPrimary;
 
@@ -64,11 +80,11 @@ export const Button: React.FC<ButtonProps> = ({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      disabled={resolvedState === 'disabled'}
+      disabled={resolvedState === "disabled"}
       onPress={onPress}
       style={({ pressed }) => [
         containerStyle,
-        pressed && resolvedState !== 'disabled' && styles.pressed,
+        pressed && resolvedState !== "disabled" && styles.pressed,
       ]}
     >
       {loading ? (
@@ -76,7 +92,11 @@ export const Button: React.FC<ButtonProps> = ({
       ) : (
         <View style={styles.content}>
           {leftIcon}
-          {children ? <Text style={[styles.label, { color: labelColor }, textStyle]}>{children}</Text> : null}
+          {children ? (
+            <Text style={[styles.label, { color: labelColor }, textStyle]}>
+              {children}
+            </Text>
+          ) : null}
           {rightIcon}
         </View>
       )}
@@ -87,8 +107,8 @@ export const Button: React.FC<ButtonProps> = ({
 const styles = StyleSheet.create({
   base: {
     borderRadius: Radius.full,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     minHeight: 40,
   },
   pressed: {
@@ -111,13 +131,13 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing[3],
   },
   content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: Spacing[2],
   },
   label: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontFamily: Fonts?.sans,
     fontSize: FontSizes.base,
   },

@@ -1,9 +1,9 @@
-import React, { createContext, useContext } from 'react';
-import { useColorScheme } from 'react-native';
-import { Colors, type ThemeColors } from '../constants/theme';
-import { useThemeStore } from '../store/theme-store';
+import React, { createContext, useContext } from "react";
+import { useColorScheme } from "react-native";
+import { Colors } from "../constants/theme";
+import { useThemeStore } from "../store/theme-store";
 
-type ThemeMode = 'light' | 'dark';
+type ThemeMode = "light" | "dark";
 
 interface ThemeContextType {
   theme: ThemeMode;
@@ -13,8 +13,10 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const systemScheme = useColorScheme() ?? 'light';
+export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const systemScheme = useColorScheme() ?? "light";
   const { theme: storedTheme, toggleTheme } = useThemeStore();
 
   // Use persisted store preference; falls back to system scheme on first run
@@ -31,7 +33,7 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({ c
 export const useCustomTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useCustomTheme must be used within a CustomThemeProvider');
+    throw new Error("useCustomTheme must be used within a CustomThemeProvider");
   }
   return context;
 };

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+echo "🔍 Running checks..."
+
+npm run format
+npm run lint
+# npm run build
+# npm run test
+npm run typecheck
+
+echo "✅ All checks passed!"

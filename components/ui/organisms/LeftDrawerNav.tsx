@@ -1,14 +1,28 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
-import { useAuth } from '@/components/auth-context';
-import { useCustomTheme } from '@/components/theme-context';
+import { useCustomTheme } from "@/components/theme-context";
 
-import { Badge } from '@/components/ui/atoms/Badge';
-import { drawerNavItems } from '@/constants/nav-items';
-import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';
+import { Badge } from "@/components/ui/atoms/Badge";
+import { drawerNavItems } from "@/constants/nav-items";
+import {
+  Elevation,
+  FontSizes,
+  Fonts,
+  Radius,
+  Spacing,
+} from "@/constants/theme";
 
 interface LeftDrawerNavProps {
   user: any; // TODO: narrow this type — waiting on shared User interface
@@ -25,11 +39,10 @@ export function LeftDrawerNav({
   onThemeToggle,
   onLogout,
 }: LeftDrawerNavProps) {
-  const { logout } = useAuth();
   const { theme } = useCustomTheme();
   const insets = useSafeAreaInsets();
 
-  const isDarkMode = isDark || theme === 'dark';
+  const isDarkMode = isDark || theme === "dark";
 
   // TODO:
   // Replace this with the current route using Expo Router.
@@ -38,7 +51,7 @@ export function LeftDrawerNav({
 
   return (
     <SafeAreaView
-      edges={['top', 'bottom', 'left']}
+      edges={["top", "bottom", "left"]}
       style={styles.drawerContainer}
     >
       <View
@@ -58,7 +71,7 @@ export function LeftDrawerNav({
             showsVerticalScrollIndicator={false}
           >
             {drawerNavItems.map((item) => {
-              const isActive = item.id === 'dashboard';
+              const isActive = item.id === "dashboard";
 
               return (
                 <TouchableOpacity
@@ -76,11 +89,7 @@ export function LeftDrawerNav({
                   <Ionicons
                     name={item.icon}
                     size={20}
-                    color={
-                      isActive
-                        ? colors.primary
-                        : colors.onSurfaceVariant
-                    }
+                    color={isActive ? colors.primary : colors.onSurfaceVariant}
                   />
 
                   <View style={styles.labelContainer}>
@@ -89,7 +98,7 @@ export function LeftDrawerNav({
                         styles.navText,
                         {
                           color: colors.text,
-                          fontWeight: isActive ? '700' : '500',
+                          fontWeight: isActive ? "700" : "500",
                           fontFamily: Fonts?.sans,
                         },
                       ]}
@@ -114,7 +123,12 @@ export function LeftDrawerNav({
             })}
           </ScrollView>
 
-          <View style={[styles.actionsSection, { paddingBottom: insets.bottom + Spacing[4] }]}> 
+          <View
+            style={[
+              styles.actionsSection,
+              { paddingBottom: insets.bottom + Spacing[4] },
+            ]}
+          >
             <View
               style={[
                 styles.divider,
@@ -134,7 +148,7 @@ export function LeftDrawerNav({
               onPress={onThemeToggle}
             >
               <Ionicons
-                name={isDarkMode ? 'sunny-outline' : 'moon-outline'}
+                name={isDarkMode ? "sunny-outline" : "moon-outline"}
                 size={20}
                 color={isDarkMode ? colors.accent : colors.onSurfaceVariant}
               />
@@ -148,7 +162,7 @@ export function LeftDrawerNav({
                   },
                 ]}
               >
-                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
               </Text>
             </TouchableOpacity>
 
@@ -189,7 +203,7 @@ export function LeftDrawerNav({
 
 const styles = StyleSheet.create({
   drawerContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
@@ -216,8 +230,8 @@ const styles = StyleSheet.create({
   },
 
   navItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: Spacing[3],
     borderRadius: Radius.md,
     gap: Spacing[3],
@@ -226,15 +240,15 @@ const styles = StyleSheet.create({
 
   labelContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     gap: Spacing[2],
   },
 
   navText: {
     fontSize: FontSizes.base,
-    fontWeight: '500',
+    fontWeight: "500",
     flex: 1,
   },
 
@@ -252,8 +266,8 @@ const styles = StyleSheet.create({
   },
 
   bottomButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: Spacing[4],
     height: 48,
     borderRadius: Radius.md,
@@ -263,7 +277,7 @@ const styles = StyleSheet.create({
 
   bottomButtonText: {
     fontSize: FontSizes.sm,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   logoutButton: {

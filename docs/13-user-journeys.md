@@ -1,6 +1,7 @@
 # 13 — User Journeys
 
 ## 1. First-Time User Onboarding → First Tracked Ride
+
 ```mermaid
 flowchart TD
     A[Install App] --> B[Splash]
@@ -17,9 +18,11 @@ flowchart TD
     L --> M[Stop Ride]
     M --> N[Ride Summary + Share Prompt]
 ```
+
 **Key success moment:** completing first tracked ride with an emergency contact configured — the core "safety trust" moment.
 
 ## 2. Solo Female Rider — Safety-First Ride
+
 ```mermaid
 flowchart TD
     A[Open App] --> B[Start Ride]
@@ -36,6 +39,7 @@ flowchart TD
 ```
 
 ## 3. Club Organizer — Planning a Paid Multi-Day Tour
+
 ```mermaid
 flowchart TD
     A[Club Admin Home] --> B[Create Event]
@@ -51,6 +55,7 @@ flowchart TD
 ```
 
 ## 4. Marketplace — Selling a Used Motorcycle
+
 ```mermaid
 flowchart TD
     A[Garage: Select Bike] --> B[Tap List for Sale]
@@ -66,6 +71,7 @@ flowchart TD
 ```
 
 ## 5. MotoGP Aspirant — Discovering the Career Pathway
+
 ```mermaid
 flowchart TD
     A[Discovers Career Roadmap in Feed/Ad] --> B[Opens Career Roadmap Screen]
@@ -80,6 +86,7 @@ flowchart TD
 ```
 
 ## 6. Crash Detection → Emergency Response (Critical Path)
+
 ```mermaid
 sequenceDiagram
     participant Rider
@@ -102,6 +109,7 @@ sequenceDiagram
 ```
 
 ## 7. Delivery Rider — Daily Utility Flow
+
 ```mermaid
 flowchart TD
     A[Open App - Quick Home Screen] --> B[Start Ride - No-frills mode]
@@ -114,6 +122,7 @@ flowchart TD
 ```
 
 ## 8. Brand — Running a Sponsored Campaign
+
 ```mermaid
 flowchart TD
     A[Brand Portal Login] --> B[Create Brand Page]

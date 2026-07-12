@@ -1,12 +1,19 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack, useRouter, useSegments } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
+import "react-native-reanimated";
 
-import { AuthProvider, useAuth } from '@/components/auth-context';
-import { CustomThemeProvider, useCustomTheme } from '@/components/theme-context';
+import { AuthProvider, useAuth } from "@/components/auth-context";
+import {
+  CustomThemeProvider,
+  useCustomTheme,
+} from "@/components/theme-context";
 
 function RootLayoutNav() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -25,29 +32,39 @@ function RootLayoutNav() {
     if (!hasMounted || isLoading) return;
 
     const currentSegment = segments[segments.length - 1] as string | undefined;
-    const inAppGroup = segments[0] === '(app)';
-    const isAuthRoute = segments[0] === '(auth)' || currentSegment === 'login' || currentSegment === 'register';
-    const isRootRoute = !segments.length || currentSegment === 'index';
+    const inAppGroup = segments[0] === "(app)";
+    const isAuthRoute =
+      segments[0] === "(auth)" ||
+      currentSegment === "login" ||
+      currentSegment === "register";
+    const isRootRoute = !segments.length || currentSegment === "index";
 
     if (!isAuthenticated && inAppGroup) {
-      router.replace('/login');
+      router.replace("/login");
     } else if (isAuthenticated && isAuthRoute) {
-      router.replace('/');
+      router.replace("/");
     } else if (!isAuthenticated && isRootRoute) {
-      router.replace('/login');
+      router.replace("/login");
     }
-  }, [isAuthenticated, isLoading, segments, hasMounted]);
+  }, [isAuthenticated, isLoading, segments, hasMounted, router]);
 
   // Show a loading screen while auth state is hydrating
   if (isLoading || !hasMounted) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: colors.background,
+        }}
+      >
         <ActivityIndicator size="large" color={colors.tint} />
       </View>
     );
   }
 
-  const navTheme = theme === 'dark' ? DarkTheme : DefaultTheme;
+  const navTheme = theme === "dark" ? DarkTheme : DefaultTheme;
   const customNavTheme = {
     ...navTheme,
     colors: {
@@ -61,7 +78,7 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={customNavTheme}>
       <Stack screenOptions={{ headerShown: false }} />
-      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
     </ThemeProvider>
   );
 }

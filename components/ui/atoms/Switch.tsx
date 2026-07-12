@@ -1,17 +1,21 @@
-import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { useUITheme } from '../shared';
+import React from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { useUITheme } from "../shared";
 
 interface SwitchProps {
-  state?: 'on' | 'off' | 'disabled';
+  state?: "on" | "off" | "disabled";
   onToggle?: () => void;
   accessibilityLabel?: string;
 }
 
-export const Switch: React.FC<SwitchProps> = ({ state = 'off', onToggle, accessibilityLabel }) => {
+export const Switch: React.FC<SwitchProps> = ({
+  state = "off",
+  onToggle,
+  accessibilityLabel,
+}) => {
   const { colors } = useUITheme();
-  const isOn = state === 'on';
-  const disabled = state === 'disabled';
+  const isOn = state === "on";
+  const disabled = state === "disabled";
 
   return (
     <Pressable
@@ -19,9 +23,19 @@ export const Switch: React.FC<SwitchProps> = ({ state = 'off', onToggle, accessi
       accessibilityLabel={accessibilityLabel}
       disabled={disabled}
       onPress={onToggle}
-      style={[styles.track, { backgroundColor: isOn ? colors.primary : colors.outlineVariant }, disabled && { opacity: 0.5 }]}
+      style={[
+        styles.track,
+        { backgroundColor: isOn ? colors.primary : colors.outlineVariant },
+        disabled && { opacity: 0.5 },
+      ]}
     >
-      <View style={[styles.thumb, { backgroundColor: colors.surface }, isOn && styles.thumbOn]} />
+      <View
+        style={[
+          styles.thumb,
+          { backgroundColor: colors.surface },
+          isOn && styles.thumbOn,
+        ]}
+      />
     </Pressable>
   );
 };
@@ -32,7 +46,7 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 999,
     padding: 2,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   thumb: {
     width: 24,
@@ -40,6 +54,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   thumbOn: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
   },
 });

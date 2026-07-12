@@ -1,6 +1,7 @@
 # 09 — Navigation Architecture
 
 ## 1. Framework
+
 Expo Router (file-based routing) with a typed route structure. Root layout uses a stack + bottom tab navigator hybrid.
 
 ## 2. Top-Level Navigation Structure
@@ -54,6 +55,7 @@ app/
 ```
 
 ## 3. Bottom Tab Bar (Primary Navigation)
+
 1. **Home/Feed** — community feed
 2. **Rides** — planning, history, saved routes
 3. **Live Ride (center, elevated FAB-style tab)** — one-tap start ride / SOS quick access
@@ -61,6 +63,7 @@ app/
 5. **Profile** — profile, garage, settings entry
 
 ## 4. Navigation Rules
+
 - **Deep linking:** every shareable entity (ride, post, club, event, listing, profile) has a stable deep link `ridingverse://<module>/<id>` and universal link `https://app.ridingverse.com/<module>/<id>`.
 - **Auth gating:** routes under `(tabs)`, `ride/`, `safety/`, `clubs/`, `marketplace/`, `chat/` require valid session; unauthenticated deep links redirect through login with a return-to redirect param.
 - **Modal vs Stack:** SOS, crash-detected, and checkout flows render as full-screen modals to prevent accidental back-navigation during critical flows.
@@ -89,15 +92,16 @@ flowchart LR
 
 ## 6. Route Guards & Permissions Matrix
 
-| Route Group | Auth Required | Role Required | Notes |
-|---|---|---|---|
-| `(auth)/*` | No | — | Redirects to `(tabs)` if already logged in |
-| `(tabs)/*` | Yes | — | Core app |
-| `safety/*` | Yes | — | Requires emergency contact configured for SOS |
-| `clubs/[id]/settings` | Yes | Club Admin/Moderator | RBAC checked server-side |
-| `admin/*` | Yes | Admin/Moderator/Support | Separate web app, RBAC enforced |
-| `marketplace/create-listing` | Yes | Verified phone | Fraud prevention gate |
+| Route Group                  | Auth Required | Role Required           | Notes                                         |
+| ---------------------------- | ------------- | ----------------------- | --------------------------------------------- |
+| `(auth)/*`                   | No            | —                       | Redirects to `(tabs)` if already logged in    |
+| `(tabs)/*`                   | Yes           | —                       | Core app                                      |
+| `safety/*`                   | Yes           | —                       | Requires emergency contact configured for SOS |
+| `clubs/[id]/settings`        | Yes           | Club Admin/Moderator    | RBAC checked server-side                      |
+| `admin/*`                    | Yes           | Admin/Moderator/Support | Separate web app, RBAC enforced               |
+| `marketplace/create-listing` | Yes           | Verified phone          | Fraud prevention gate                         |
 
 ## 7. State Restoration
+
 - Zustand + MMKV persist last active tab, in-progress ride draft, and unsent chat drafts across app restarts.
 - Live Ride screen restores an in-progress ride session automatically if the app was killed mid-ride (recovery banner: "Resume ride in progress?").

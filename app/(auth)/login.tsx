@@ -1,35 +1,41 @@
-import React, { useState } from 'react';
+import { useAuth } from "@/components/auth-context";
+import { useCustomTheme } from "@/components/theme-context";
 import {
+  Elevation,
+  FontSizes,
+  Fonts,
+  Radius,
+  Spacing,
+} from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
-import { Link } from 'expo-router';
-import { useAuth } from '@/components/auth-context';
-import { useCustomTheme } from '@/components/theme-context';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
   const { login } = useAuth();
   const { theme, colors } = useCustomTheme();
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError('Please fill in all fields.');
+      setError("Please fill in all fields.");
       return;
     }
 
@@ -38,55 +44,115 @@ export default function LoginScreen() {
     try {
       await login(email, password);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Login failed. Please check your credentials.';
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Login failed. Please check your credentials.";
       setError(message);
-      console.log('Login error:', message);
+      console.log("Login error:", message);
     } finally {
       setLoading(false);
     }
   };
 
-  const isDark = theme === 'dark';
+  const isDark = theme === "dark";
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.headerContainer}>
-            <View style={[styles.logoBadge, { backgroundColor: colors.surfaceContainerHigh }, Elevation.card]}>
+            <View
+              style={[
+                styles.logoBadge,
+                { backgroundColor: colors.surfaceContainerHigh },
+                Elevation.card,
+              ]}
+            >
               <Ionicons name="bicycle" size={40} color={colors.primary} />
             </View>
-            <Text style={[styles.title, { color: colors.text, fontFamily: Fonts?.display }]}>Riding Verse</Text>
+            <Text
+              style={[
+                styles.title,
+                { color: colors.text, fontFamily: Fonts?.display },
+              ]}
+            >
+              Riding Verse
+            </Text>
             <Text style={[styles.subtitle, { color: colors.onSurfaceVariant }]}>
               Connect with riders worldwide
             </Text>
           </View>
 
-          <View style={[styles.formContainer, { 
-            backgroundColor: colors.surface,
-            borderColor: colors.outlineVariant,
-          }, Elevation.card]}>
-            <Text style={[styles.formTitle, { color: colors.text, fontFamily: Fonts?.display }]}>Sign In</Text>
+          <View
+            style={[
+              styles.formContainer,
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.outlineVariant,
+              },
+              Elevation.card,
+            ]}
+          >
+            <Text
+              style={[
+                styles.formTitle,
+                { color: colors.text, fontFamily: Fonts?.display },
+              ]}
+            >
+              Sign In
+            </Text>
 
             {error && (
-              <View style={[styles.errorContainer, { backgroundColor: colors.dangerContainer }]}>
+              <View
+                style={[
+                  styles.errorContainer,
+                  { backgroundColor: colors.dangerContainer },
+                ]}
+              >
                 <Ionicons name="alert-circle" size={20} color={colors.danger} />
-                <Text style={[styles.errorText, { color: colors.danger }]}>{error}</Text>
+                <Text style={[styles.errorText, { color: colors.danger }]}>
+                  {error}
+                </Text>
               </View>
             )}
 
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Email or Username</Text>
-              <View style={[styles.inputContainer, { 
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="mail-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
+              <Text
+                style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}
+              >
+                Email or Username
+              </Text>
+              <View
+                style={[
+                  styles.inputContainer,
+                  {
+                    backgroundColor: isDark
+                      ? colors.surfaceContainer
+                      : colors.surface,
+                    borderColor: colors.outline,
+                  },
+                ]}
+              >
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color={colors.onSurfaceVariant}
+                  style={styles.inputIcon}
+                />
                 <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
+                  style={[
+                    styles.input,
+                    { color: colors.text, fontFamily: Fonts?.sans },
+                  ]}
                   placeholder="Enter email or username"
                   placeholderTextColor={colors.onSurfaceMuted}
                   value={email}
@@ -101,14 +167,33 @@ export default function LoginScreen() {
             </View>
 
             <View style={styles.inputWrapper}>
-              <Text style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}>Password</Text>
-              <View style={[styles.inputContainer, { 
-                backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
-                borderColor: colors.outline,
-              }]}>
-                <Ionicons name="lock-closed-outline" size={20} color={colors.onSurfaceVariant} style={styles.inputIcon} />
+              <Text
+                style={[styles.inputLabel, { color: colors.onSurfaceVariant }]}
+              >
+                Password
+              </Text>
+              <View
+                style={[
+                  styles.inputContainer,
+                  {
+                    backgroundColor: isDark
+                      ? colors.surfaceContainer
+                      : colors.surface,
+                    borderColor: colors.outline,
+                  },
+                ]}
+              >
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color={colors.onSurfaceVariant}
+                  style={styles.inputIcon}
+                />
                 <TextInput
-                  style={[styles.input, { color: colors.text, fontFamily: Fonts?.sans }]}
+                  style={[
+                    styles.input,
+                    { color: colors.text, fontFamily: Fonts?.sans },
+                  ]}
                   placeholder="Enter password"
                   placeholderTextColor={colors.onSurfaceMuted}
                   secureTextEntry={!showPassword}
@@ -120,35 +205,58 @@ export default function LoginScreen() {
                   autoCapitalize="none"
                   autoCorrect={false}
                 />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Ionicons 
-                    name={showPassword ? "eye-off-outline" : "eye-outline"} 
-                    size={20} 
-                    color={colors.onSurfaceVariant} 
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
+                >
+                  <Ionicons
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color={colors.onSurfaceVariant}
                   />
                 </TouchableOpacity>
               </View>
             </View>
 
-            <TouchableOpacity 
-              style={[styles.loginButton, { backgroundColor: colors.primary }, Elevation.card]} 
+            <TouchableOpacity
+              style={[
+                styles.loginButton,
+                { backgroundColor: colors.primary },
+                Elevation.card,
+              ]}
               onPress={handleLogin}
               disabled={loading}
             >
               {loading ? (
                 <ActivityIndicator size="small" color={colors.onPrimary} />
               ) : (
-                <Text style={[styles.loginButtonText, { color: colors.onPrimary, fontFamily: Fonts?.sans }]}>Sign In</Text>
+                <Text
+                  style={[
+                    styles.loginButtonText,
+                    { color: colors.onPrimary, fontFamily: Fonts?.sans },
+                  ]}
+                >
+                  Sign In
+                </Text>
               )}
             </TouchableOpacity>
 
-            <View style={[styles.linkWrapper, { borderTopColor: colors.outlineVariant }]}>
-              <Text style={[styles.linkText, { color: colors.onSurfaceVariant }]}>
-                Don't have an account?{' '}
+            <View
+              style={[
+                styles.linkWrapper,
+                { borderTopColor: colors.outlineVariant },
+              ]}
+            >
+              <Text
+                style={[styles.linkText, { color: colors.onSurfaceVariant }]}
+              >
+                Don't have an account?{" "}
               </Text>
               <Link href="/register" asChild>
                 <TouchableOpacity>
-                  <Text style={[styles.linkAction, { color: colors.primary }]}>Sign Up</Text>
+                  <Text style={[styles.linkAction, { color: colors.primary }]}>
+                    Sign Up
+                  </Text>
                 </TouchableOpacity>
               </Link>
             </View>
@@ -168,30 +276,30 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: Spacing[6],
   },
   headerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: Spacing[8],
   },
   logoBadge: {
     width: 80,
     height: 80,
     borderRadius: Radius.full,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: Spacing[4],
   },
   title: {
-    fontSize: FontSizes['2xl'],
-    fontWeight: '800',
+    fontSize: FontSizes["2xl"],
+    fontWeight: "800",
     letterSpacing: 0.5,
     marginBottom: Spacing[2],
   },
   subtitle: {
     fontSize: FontSizes.base,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   formContainer: {
     borderRadius: Radius.lg,
@@ -200,19 +308,19 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     fontSize: FontSizes.xl,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: Spacing[6],
   },
   errorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: Spacing[3],
     borderRadius: Radius.md,
     marginBottom: Spacing[4],
   },
   errorText: {
     fontSize: FontSizes.sm,
-    fontWeight: '500',
+    fontWeight: "500",
     marginLeft: Spacing[2],
     flex: 1,
   },
@@ -221,12 +329,12 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: FontSizes.sm,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: Spacing[2],
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     height: 52,
     borderWidth: 1,
     borderRadius: Radius.md,
@@ -238,7 +346,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: FontSizes.base,
-    height: '100%',
+    height: "100%",
   },
   eyeIcon: {
     padding: Spacing[1],
@@ -246,28 +354,28 @@ const styles = StyleSheet.create({
   loginButton: {
     height: 52,
     borderRadius: Radius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: Spacing[3],
   },
   loginButtonText: {
     fontSize: FontSizes.base,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   linkWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: Spacing[6],
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: Spacing[4],
   },
   linkText: {
     fontSize: FontSizes.sm,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   linkAction: {
     fontSize: FontSizes.sm,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });

@@ -1,24 +1,26 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useUITheme, Spacing, Radius } from '../shared';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { useUITheme, Spacing, Radius } from "../shared";
 
 interface SkeletonLoaderProps {
-  variant?: 'text' | 'avatar' | 'card' | 'list';
+  variant?: "text" | "avatar" | "card" | "list";
 }
 
-export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ variant = 'text' }) => {
+export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
+  variant = "text",
+}) => {
   const { colors } = useUITheme();
   const baseColor = colors.surfaceContainerHigh;
 
-  if (variant === 'avatar') {
+  if (variant === "avatar") {
     return <View style={[styles.avatar, { backgroundColor: baseColor }]} />;
   }
 
-  if (variant === 'card') {
+  if (variant === "card") {
     return <View style={[styles.card, { backgroundColor: baseColor }]} />;
   }
 
-  if (variant === 'list') {
+  if (variant === "list") {
     return (
       <View style={styles.list}>
         <View style={[styles.row, { backgroundColor: baseColor }]} />
@@ -33,7 +35,7 @@ export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ variant = 'text'
 const styles = StyleSheet.create({
   text: {
     height: 12,
-    width: '60%',
+    width: "60%",
     borderRadius: Radius.full,
   },
   avatar: {
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
   },
   row: {
     height: 12,
-    width: '100%',
+    width: "100%",
     borderRadius: Radius.full,
   },
 });

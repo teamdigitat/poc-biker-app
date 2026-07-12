@@ -1,16 +1,22 @@
-import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { type BaseComponentProps, useUITheme, Spacing, Radius, Elevation } from '../shared';
+import React from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import {
+  type BaseComponentProps,
+  useUITheme,
+  Spacing,
+  Radius,
+  Elevation,
+} from "../shared";
 
 interface CardProps extends BaseComponentProps {
-  variant?: 'elevated' | 'outlined' | 'filled';
-  state?: 'default' | 'pressed';
+  variant?: "elevated" | "outlined" | "filled";
+  state?: "default" | "pressed";
   onPress?: () => void;
 }
 
 export const Card: React.FC<CardProps> = ({
-  variant = 'elevated',
-  state = 'default',
+  variant = "elevated",
+  state = "default",
   onPress,
   children,
   style,
@@ -20,19 +26,21 @@ export const Card: React.FC<CardProps> = ({
 
   const containerStyle = [
     styles.base,
-    variant === 'elevated' && {
+    variant === "elevated" && {
       backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
       ...Elevation.card,
     },
-    variant === 'outlined' && {
+    variant === "outlined" && {
       backgroundColor: isDark ? colors.surfaceContainer : colors.surface,
       borderWidth: 1,
       borderColor: colors.outlineVariant,
     },
-    variant === 'filled' && {
-      backgroundColor: isDark ? colors.surfaceContainerHigh : colors.surfaceContainer,
+    variant === "filled" && {
+      backgroundColor: isDark
+        ? colors.surfaceContainerHigh
+        : colors.surfaceContainer,
     },
-    state === 'pressed' && { opacity: 0.9 },
+    state === "pressed" && { opacity: 0.9 },
     style,
   ];
 
@@ -40,7 +48,11 @@ export const Card: React.FC<CardProps> = ({
 
   if (onPress) {
     return (
-      <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [containerStyle, pressed && styles.pressed]}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={onPress}
+        style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
+      >
         {body}
       </Pressable>
     );
@@ -52,7 +64,7 @@ export const Card: React.FC<CardProps> = ({
 const styles = StyleSheet.create({
   base: {
     borderRadius: Radius.md,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   pressed: {
     transform: [{ scale: 0.99 }],

@@ -1,4 +1,4 @@
-import { StateStorage } from 'zustand/middleware';
+import { StateStorage } from "zustand/middleware";
 
 class MemoryStorage {
   private store = new Map<string, string>();
@@ -17,7 +17,8 @@ class MemoryStorage {
 }
 
 const memoryStorage = new MemoryStorage();
-const isWeb = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+const isWeb =
+  typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 
 export const safePersistStorage: StateStorage = {
   getItem: (name: string) => {

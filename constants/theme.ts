@@ -13,45 +13,45 @@
  * `Spacing`, `Radius`, or `Fonts` below.
  */
 
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
 // ---------------------------------------------------------------------------
 // 1. Raw brand palette (the only place hex values should ever be written)
 // ---------------------------------------------------------------------------
 const palette = {
   // Brand
-  tarmacOrange50: '#FFF1EC',
-  tarmacOrange100: '#FFD9CB',
-  tarmacOrange300: '#FF8A63',
-  tarmacOrange500: '#E8422A', // primary brand color
-  tarmacOrange600: '#C7331E',
-  tarmacOrange700: '#9C2716',
+  tarmacOrange50: "#FFF1EC",
+  tarmacOrange100: "#FFD9CB",
+  tarmacOrange300: "#FF8A63",
+  tarmacOrange500: "#E8422A", // primary brand color
+  tarmacOrange600: "#C7331E",
+  tarmacOrange700: "#9C2716",
 
-  reflectorYellow300: '#FFE08A',
-  reflectorYellow500: '#FFC93C', // accent
-  reflectorYellow700: '#D9A61E',
+  reflectorYellow300: "#FFE08A",
+  reflectorYellow500: "#FFC93C", // accent
+  reflectorYellow700: "#D9A61E",
 
-  asphalt900: '#0B0F13',
-  asphalt800: '#101820', // base dark surface
-  asphalt700: '#1A232C',
-  asphalt600: '#242F3A',
-  asphalt400: '#4B5A67',
-  asphalt200: '#8C99A3',
+  asphalt900: "#0B0F13",
+  asphalt800: "#101820", // base dark surface
+  asphalt700: "#1A232C",
+  asphalt600: "#242F3A",
+  asphalt400: "#4B5A67",
+  asphalt200: "#8C99A3",
 
-  neutral0: '#FFFFFF',
-  neutral50: '#F7F8F9',
-  neutral100: '#EEF0F2',
-  neutral200: '#E2E5E8',
-  neutral300: '#C9CFD4',
-  neutral500: '#6B7280',
-  neutral700: '#3A4148',
+  neutral0: "#FFFFFF",
+  neutral50: "#F7F8F9",
+  neutral100: "#EEF0F2",
+  neutral200: "#E2E5E8",
+  neutral300: "#C9CFD4",
+  neutral500: "#6B7280",
+  neutral700: "#3A4148",
 
-  success500: '#1FA96B',
-  success700: '#137A4C',
-  warning500: '#F4A63A',
-  warning700: '#C77E1E',
-  danger500: '#D7263D',
-  danger700: '#A81A2C',
+  success500: "#1FA96B",
+  success700: "#137A4C",
+  warning500: "#F4A63A",
+  warning700: "#C77E1E",
+  danger500: "#D7263D",
+  danger700: "#A81A2C",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -103,7 +103,7 @@ const semanticLight = {
   onWarning: palette.asphalt900,
   danger: palette.danger500,
   onDanger: palette.neutral0,
-  dangerContainer: '#FFE0E3',
+  dangerContainer: "#FFE0E3",
   onDangerContainer: palette.danger700,
 
   // Tab bar / icons
@@ -111,7 +111,7 @@ const semanticLight = {
   tabIconSelected: palette.tarmacOrange500,
 
   // Map (day style hook)
-  mapStyle: 'day' as const,
+  mapStyle: "day" as const,
 };
 
 const semanticDark = {
@@ -152,15 +152,15 @@ const semanticDark = {
   onSuccess: palette.asphalt900,
   warning: palette.warning500,
   onWarning: palette.asphalt900,
-  danger: '#FF6B7A',
+  danger: "#FF6B7A",
   onDanger: palette.asphalt900,
   dangerContainer: palette.danger700,
-  onDangerContainer: '#FFE0E3',
+  onDangerContainer: "#FFE0E3",
 
   tabIconDefault: palette.asphalt200,
   tabIconSelected: palette.tarmacOrange300,
 
-  mapStyle: 'night' as const,
+  mapStyle: "night" as const,
 };
 
 export const Colors = {
@@ -185,28 +185,28 @@ export const Colors = {
 // ---------------------------------------------------------------------------
 export const Fonts = Platform.select({
   ios: {
-    sans: 'Inter', // body/UI text
-    display: 'Sora', // headings, hero numerics (speed/distance)
-    rounded: 'ui-rounded',
-    mono: 'ui-monospace',
+    sans: "Inter", // body/UI text
+    display: "Sora", // headings, hero numerics (speed/distance)
+    rounded: "ui-rounded",
+    mono: "ui-monospace",
   },
   android: {
-    sans: 'Inter',
-    display: 'Sora',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: "Inter",
+    display: "Sora",
+    rounded: "normal",
+    mono: "monospace",
   },
   default: {
-    sans: 'Inter',
-    display: 'Sora',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: "Inter",
+    display: "Sora",
+    rounded: "normal",
+    mono: "monospace",
   },
   web: {
     sans: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-    display: 'Sora, Inter, system-ui, sans-serif',
+    display: "Sora, Inter, system-ui, sans-serif",
     rounded: "'SF Pro Rounded', sans-serif",
-    mono: 'SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+    mono: "SFMono-Regular, Menlo, Monaco, Consolas, monospace",
   },
 });
 
@@ -217,8 +217,8 @@ export const FontSizes = {
   md: 18, // Ride Mode minimum body size
   lg: 20,
   xl: 24,
-  '2xl': 32,
-  '3xl': 40,
+  "2xl": 32,
+  "3xl": 40,
   rideNumeric: 28, // live speed/distance readouts
 } as const;
 
@@ -254,7 +254,7 @@ export const Elevation = {
   none: {},
   card: Platform.select({
     ios: {
-      shadowColor: '#000',
+      shadowColor: "#000",
       shadowOpacity: 0.08,
       shadowRadius: 8,
       shadowOffset: { width: 0, height: 2 },
@@ -264,7 +264,7 @@ export const Elevation = {
   }),
   modal: Platform.select({
     ios: {
-      shadowColor: '#000',
+      shadowColor: "#000",
       shadowOpacity: 0.16,
       shadowRadius: 16,
       shadowOffset: { width: 0, height: 4 },

@@ -1,8 +1,8 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { safePersistStorage } from './custom-storage';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { safePersistStorage } from "./custom-storage";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
 
 interface User {
   id: string;
@@ -18,24 +18,38 @@ interface AuthState {
   isLoading: boolean;
   hasHydrated: boolean;
   login: (emailOrUsername: string, password: string) => Promise<void>;
-  register: (email: string, username: string, fullName: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    fullName: string,
+    password: string,
+  ) => Promise<void>;
   logout: () => void;
   setHasHydrated: (state: boolean) => void;
 }
 
-const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 10000) => {
+const fetchWithTimeout = async (
+  url: string,
+  options: RequestInit = {},
+  timeout = 10000,
+) => {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   try {
-    const response = await fetch(url, { ...options, signal: controller.signal });
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
     clearTimeout(id);
     return response;
   } catch (error: any) {
     clearTimeout(id);
-    if (error.name === 'AbortError') {
-      throw new Error('Connection timed out. Please check if your backend server is running.');
+    if (error.name === "AbortError") {
+      throw new Error(
+        "Connection timed out. Please check if your backend server is running.",
+      );
     }
-    throw new Error('Network request failed. Please check your connection.');
+    throw new Error("Network request failed. Please check your connection.");
   }
 };
 
@@ -51,14 +65,17 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           const res = await fetchWithTimeout(`${API_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ emailOrUsername, password }),
           });
 
           if (!res.ok) {
             const errorData = await res.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Login failed. Please check your credentials.');
+            throw new Error(
+              errorData.message ||
+                "Login failed. Please check your credentials.",
+            );
           }
 
           const data = await res.json();
@@ -73,14 +90,16 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           const res = await fetchWithTimeout(`${API_URL}/auth/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, username, fullName, password }),
           });
 
           if (!res.ok) {
             const errorData = await res.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Registration failed. Please try again.');
+            throw new Error(
+              errorData.message || "Registration failed. Please try again.",
+            );
           }
 
           const data = await res.json();
@@ -100,11 +119,11 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'biker-auth-storage',
+      name: "biker-auth-storage",
       storage: createJSONStorage(() => safePersistStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
-    }
-  )
+    },
+  ),
 );

@@ -1,10 +1,16 @@
-import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { type BaseComponentProps, type UISize, type UIState, useUITheme, Radius } from '../shared';
+import React from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  type BaseComponentProps,
+  type UISize,
+  type UIState,
+  useUITheme,
+  Radius,
+} from "../shared";
 
 interface IconButtonProps extends BaseComponentProps {
-  variant?: 'filled' | 'outline' | 'ghost';
+  variant?: "filled" | "outline" | "ghost";
   size?: UISize;
   state?: UIState;
   disabled?: boolean;
@@ -13,29 +19,29 @@ interface IconButtonProps extends BaseComponentProps {
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
-  variant = 'filled',
-  size = 'medium',
-  state = 'default',
+  variant = "filled",
+  size = "medium",
+  state = "default",
   disabled = false,
-  iconName = 'add',
+  iconName = "add",
   onPress,
   style,
   accessibilityLabel,
 }) => {
   const { colors } = useUITheme();
-  const resolvedState = disabled || state === 'disabled' ? 'disabled' : state;
+  const resolvedState = disabled || state === "disabled" ? "disabled" : state;
 
   const containerStyle = [
     styles.base,
     styles[size],
-    variant === 'filled' && { backgroundColor: colors.primary },
-    variant === 'outline' && {
+    variant === "filled" && { backgroundColor: colors.primary },
+    variant === "outline" && {
       borderWidth: 1,
       borderColor: colors.primary,
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
     },
-    variant === 'ghost' && { backgroundColor: 'transparent' },
-    resolvedState === 'disabled' && { opacity: 0.55 },
+    variant === "ghost" && { backgroundColor: "transparent" },
+    resolvedState === "disabled" && { opacity: 0.55 },
     style,
   ];
 
@@ -43,12 +49,19 @@ export const IconButton: React.FC<IconButtonProps> = ({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      disabled={resolvedState === 'disabled'}
+      disabled={resolvedState === "disabled"}
       onPress={onPress}
-      style={({ pressed }) => [containerStyle, pressed && resolvedState !== 'disabled' && styles.pressed]}
+      style={({ pressed }) => [
+        containerStyle,
+        pressed && resolvedState !== "disabled" && styles.pressed,
+      ]}
     >
       <View style={styles.iconWrapper}>
-        <Ionicons name={iconName} size={size === 'small' ? 16 : size === 'large' ? 22 : 18} color={variant === 'filled' ? colors.onPrimary : colors.primary} />
+        <Ionicons
+          name={iconName}
+          size={size === "small" ? 16 : size === "large" ? 22 : 18}
+          color={variant === "filled" ? colors.onPrimary : colors.primary}
+        />
       </View>
     </Pressable>
   );
@@ -57,8 +70,8 @@ export const IconButton: React.FC<IconButtonProps> = ({
 const styles = StyleSheet.create({
   base: {
     borderRadius: Radius.full,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   pressed: {
     opacity: 0.9,
@@ -77,7 +90,7 @@ const styles = StyleSheet.create({
     height: 48,
   },
   iconWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

@@ -14,10 +14,10 @@ This is the practical, code-facing companion to `docs/10-design-system.md`. That
 
 ```tsx
 // ❌ Don't
-<View style={{ backgroundColor: '#E8422A', padding: 16, borderRadius: 12 }} />;
+<View style={{ backgroundColor: "#E8422A", padding: 16, borderRadius: 12 }} />;
 
 // ✅ Do
-import { Colors, Spacing, Radius } from '@/theme';
+import { Colors, Spacing, Radius } from "@/theme";
 const { colors } = useTheme(); // resolves light/dark automatically
 <View
   style={{
@@ -64,7 +64,7 @@ Colors are split into two layers:
 ```tsx
 // ✅ Correct dark-mode-safe pattern
 function useTheme() {
-  const scheme = useColorScheme() ?? 'light';
+  const scheme = useColorScheme() ?? "light";
   return { colors: Colors[scheme], scheme };
 }
 ```
@@ -161,7 +161,7 @@ Every list screen must use the shared `<EmptyState>`, `<SkeletonLoader>`, and `<
 ## 11. Quick Reference Import
 
 ```tsx
-import { Colors, Fonts, FontSizes, Spacing, Radius, Elevation } from '@/theme';
+import { Colors, Fonts, FontSizes, Spacing, Radius, Elevation } from "@/theme";
 ```
 
 When in doubt: **check this file first, check `docs/10-design-system.md` second, ask before inventing a new token.**

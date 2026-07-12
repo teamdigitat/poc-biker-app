@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { Pressable, StyleSheet, TextInput as RNTextInput, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { type BaseComponentProps, type UISize, useUITheme, Radius, Spacing, FontSizes, Fonts } from '../shared';
+import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  Pressable,
+  TextInput as RNTextInput,
+  StyleSheet,
+  View,
+} from "react-native";
+import {
+  type BaseComponentProps,
+  FontSizes,
+  Fonts,
+  Radius,
+  Spacing,
+  type UISize,
+  useUITheme,
+} from "../shared";
 
 interface TextInputProps extends BaseComponentProps {
-  variant?: 'filled' | 'outline';
-  type?: 'text' | 'password' | 'email' | 'number';
+  variant?: "filled" | "outline";
+  type?: "text" | "password" | "email" | "number";
   size?: UISize;
-  state?: 'default' | 'focused' | 'filled' | 'error' | 'disabled' | 'readonly';
+  state?: "default" | "focused" | "filled" | "error" | "disabled" | "readonly";
   placeholder?: string;
   value?: string;
   onChangeText?: (text: string) => void;
@@ -17,10 +30,10 @@ interface TextInputProps extends BaseComponentProps {
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
-  variant = 'outline',
-  type = 'text',
-  size = 'medium',
-  state = 'default',
+  variant = "outline",
+  type = "text",
+  size = "medium",
+  state = "default",
   placeholder,
   value,
   onChangeText,
@@ -31,28 +44,36 @@ export const TextInput: React.FC<TextInputProps> = ({
   textStyle,
   accessibilityLabel,
 }) => {
-  const { isDark, colors } = useUITheme();
+  const { colors } = useUITheme();
   const [focused, setFocused] = useState(false);
-  const resolvedState = state === 'focused' ? 'focused' : state;
-  const isDisabled = resolvedState === 'disabled' || resolvedState === 'readonly';
+  const resolvedState = state === "focused" ? "focused" : state;
+  const isDisabled =
+    resolvedState === "disabled" || resolvedState === "readonly";
 
   const containerStyle = [
     styles.base,
     styles[size],
-    variant === 'filled' && { backgroundColor: colors.surfaceContainer },
-    variant === 'outline' && {
+    variant === "filled" && { backgroundColor: colors.surfaceContainer },
+    variant === "outline" && {
       borderWidth: 1,
-      borderColor: resolvedState === 'error' ? colors.danger : focused ? colors.primary : colors.outline,
-      backgroundColor: 'transparent',
+      borderColor:
+        resolvedState === "error"
+          ? colors.danger
+          : focused
+            ? colors.primary
+            : colors.outline,
+      backgroundColor: "transparent",
     },
-    resolvedState === 'error' && { borderColor: colors.danger },
+    resolvedState === "error" && { borderColor: colors.danger },
     isDisabled && { opacity: 0.6 },
     style,
   ];
 
   return (
     <View style={containerStyle}>
-      {leftIcon ? <Ionicons name={leftIcon} size={18} color={colors.onSurfaceVariant} /> : null}
+      {leftIcon ? (
+        <Ionicons name={leftIcon} size={18} color={colors.onSurfaceVariant} />
+      ) : null}
       <RNTextInput
         accessibilityLabel={accessibilityLabel}
         placeholder={placeholder}
@@ -60,16 +81,26 @@ export const TextInput: React.FC<TextInputProps> = ({
         value={value}
         onChangeText={onChangeText}
         editable={!isDisabled}
-        secureTextEntry={type === 'password'}
-        keyboardType={type === 'email' ? 'email-address' : type === 'number' ? 'numeric' : 'default'}
-        autoCapitalize={type === 'email' ? 'none' : 'sentences'}
+        secureTextEntry={type === "password"}
+        keyboardType={
+          type === "email"
+            ? "email-address"
+            : type === "number"
+              ? "numeric"
+              : "default"
+        }
+        autoCapitalize={type === "email" ? "none" : "sentences"}
         style={[styles.input, { color: colors.text }, textStyle]}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
       />
       {rightIcon ? (
         <Pressable onPress={onRightIconPress}>
-          <Ionicons name={rightIcon} size={18} color={colors.onSurfaceVariant} />
+          <Ionicons
+            name={rightIcon}
+            size={18}
+            color={colors.onSurfaceVariant}
+          />
         </Pressable>
       ) : null}
     </View>
@@ -78,8 +109,8 @@ export const TextInput: React.FC<TextInputProps> = ({
 
 const styles = StyleSheet.create({
   base: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: Radius.sm,
     gap: Spacing[2],
   },
