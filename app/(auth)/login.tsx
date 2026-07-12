@@ -32,7 +32,7 @@ export default function LoginScreen() {
       setError('Please fill in all fields.');
       return;
     }
-    
+
     setError(null);
     setLoading(true);
     try {
@@ -40,6 +40,7 @@ export default function LoginScreen() {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Login failed. Please check your credentials.';
       setError(message);
+      console.log('Login error:', message);
     } finally {
       setLoading(false);
     }
