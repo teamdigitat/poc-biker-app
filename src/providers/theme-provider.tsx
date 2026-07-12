@@ -13,7 +13,9 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const systemScheme = useColorScheme() ?? 'light';
   const { theme: storedTheme, toggleTheme } = useThemeStore();
 

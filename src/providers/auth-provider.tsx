@@ -12,17 +12,22 @@ interface User {
 interface AuthContextType {
   user: User | null;
   token: string | null;
+  refreshToken: string | null;
+  deviceId: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (emailOrUsername: string, password: string) => Promise<void>;
-  register: (email: string, username: string, fullName: string, password: string) => Promise<void>;
-  logout: () => void;
+  login: (emailOrUsername: string, password: string, deviceInfo?: any) => Promise<void>;
+  register: (email: string, username: string, fullName: string, password: string, deviceInfo?: any) => Promise<void>;
+  loginWithGoogle: (idToken: string, deviceInfo?: any) => Promise<void>;
+  loginWithApple: (identityToken: string, deviceInfo?: any) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshAccessToken: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, token, isLoading, hasHydrated, login, register, logout } = useAuthStore();
+  const { user, token, refreshToken, deviceId, isLoading, hasHydrated, login, register, loginWithGoogle, loginWithApple, logout, refreshAccessToken } = useAuthStore();
 
   const isAuthenticated = !!token;
   const isStateLoading = isLoading || !hasHydrated;
@@ -32,11 +37,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         user,
         token,
+        refreshToken,
+        deviceId,
         isAuthenticated,
         isLoading: isStateLoading,
         login,
         register,
-        logout: () => logout(),
+        loginWithGoogle,
+        loginWithApple,
+        logout,
+        refreshAccessToken,
       }}
     >
       {children}

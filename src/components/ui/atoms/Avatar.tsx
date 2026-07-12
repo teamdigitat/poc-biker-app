@@ -31,10 +31,29 @@ export const Avatar: React.FC<AvatarProps> = ({
   const dimension = sizeMap[size];
 
   return (
-    <View style={[styles.base, { width: dimension, height: dimension, borderRadius: dimension / 2, backgroundColor: colors.surfaceContainerHigh }, style]}>
-      {variant === 'image' && src ? <Image source={{ uri: src }} style={styles.image} /> : null}
-      {variant === 'initials' ? <Text style={[styles.initials, { color: colors.text }]}>{initials}</Text> : null}
-      {variant === 'icon' ? <Ionicons name={iconName} size={dimension * 0.45} color={colors.text} /> : null}
+    <View
+      style={[
+        styles.base,
+        {
+          width: dimension,
+          height: dimension,
+          borderRadius: dimension / 2,
+          backgroundColor: colors.surfaceContainerHigh,
+        },
+        style,
+      ]}
+    >
+      {variant === 'image' && src ? (
+        <Image source={{ uri: src }} style={styles.image} />
+      ) : null}
+      {variant === 'initials' ? (
+        <Text style={[styles.initials, { color: colors.text }]}>
+          {initials}
+        </Text>
+      ) : null}
+      {variant === 'icon' ? (
+        <Ionicons name={iconName} size={dimension * 0.45} color={colors.text} />
+      ) : null}
     </View>
   );
 };

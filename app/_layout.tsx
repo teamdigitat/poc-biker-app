@@ -1,13 +1,17 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import ProviderWrapper from '@/providers';
+import ProviderWrapper from '@/src/providers/index';
 
-import { useAuth } from '@/providers/auth-provider';
-import { useCustomTheme } from '@/providers/theme-provider';
+import { useAuth } from '@/src/providers/auth-provider';
+import { useCustomTheme } from '@/src/providers/theme-provider';
 
 function RootLayoutNav() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -27,7 +31,10 @@ function RootLayoutNav() {
 
     const currentSegment = segments[segments.length - 1] as string | undefined;
     const inAppGroup = segments[0] === '(app)';
-    const isAuthRoute = segments[0] === '(auth)' || currentSegment === 'login' || currentSegment === 'register';
+    const isAuthRoute =
+      segments[0] === '(auth)' ||
+      currentSegment === 'login' ||
+      currentSegment === 'register';
     const isRootRoute = !segments.length || currentSegment === 'index';
 
     if (!isAuthenticated && inAppGroup) {
@@ -42,8 +49,15 @@ function RootLayoutNav() {
   // Show a loading screen while auth state is hydrating
   if (isLoading || !hasMounted) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
-        <ActivityIndicator size="large" color={colors.tint} />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: colors.background,
+        }}
+      >
+        <ActivityIndicator size='large' color={colors.tint} />
       </View>
     );
   }
@@ -62,8 +76,8 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={customNavTheme}>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(app)" />
+        <Stack.Screen name='(auth)' />
+        <Stack.Screen name='(app)' />
       </Stack>
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
     </ThemeProvider>

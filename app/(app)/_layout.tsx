@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Slot, useRouter } from 'expo-router';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useAuth } from '@/providers/auth-provider';
-import { useCustomTheme } from '@/providers/theme-provider';
+import { useAuth } from '@/src/providers/auth-provider';
+import { useCustomTheme } from '@/src/providers/theme-provider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { LeftDrawerNav } from '@/components/ui/organisms/LeftDrawerNav';
-import { BottomNavBar } from '@/components/ui/organisms/BottomNavBar';
+import { LeftDrawerNav } from '@/src/components/ui/organisms/LeftDrawerNav';
+import { BottomNavBar } from '@/src/components/ui/organisms/BottomNavBar';
 
 const Drawer = createDrawerNavigator();
 
@@ -66,16 +66,37 @@ function AppShell() {
       />
 
       {isQuickActionsOpen && (
-        <View style={[styles.quickActionsOverlay, { backgroundColor: isDark ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.18)' }]}> 
-          <View style={[styles.quickActionsPanel, { backgroundColor: isDark ? '#141517' : '#FFF', borderColor: isDark ? '#2E3236' : '#E1E4E6' }]}> 
+        <View
+          style={[
+            styles.quickActionsOverlay,
+            {
+              backgroundColor: isDark ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.18)',
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.quickActionsPanel,
+              {
+                backgroundColor: isDark ? '#141517' : '#FFF',
+                borderColor: isDark ? '#2E3236' : '#E1E4E6',
+              },
+            ]}
+          >
             {quickActions.map((action) => (
               <TouchableOpacity
                 key={action.label}
                 style={styles.quickActionItem}
                 onPress={() => handleQuickActionPress(action.label)}
               >
-                <Ionicons name={action.icon as any} size={20} color={colors.text} />
-                <Text style={[styles.quickActionText, { color: colors.text }]}>{action.label}</Text>
+                <Ionicons
+                  name={action.icon as any}
+                  size={20}
+                  color={colors.text}
+                />
+                <Text style={[styles.quickActionText, { color: colors.text }]}>
+                  {action.label}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -97,7 +118,12 @@ function CustomDrawerContent(props: any) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme === 'dark' ? '#141517' : '#FFF' }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: theme === 'dark' ? '#141517' : '#FFF',
+      }}
+    >
       <LeftDrawerNav
         user={user}
         isDark={theme === 'dark'}
@@ -127,7 +153,7 @@ export default function AppLayout() {
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
-        <Drawer.Screen name="Dashboard" component={AppShell} />
+        <Drawer.Screen name='Dashboard' component={AppShell} />
       </Drawer.Navigator>
     </View>
   );

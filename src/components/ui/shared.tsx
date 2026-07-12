@@ -1,10 +1,17 @@
 import React from 'react';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { useCustomTheme } from '@/providers/theme-provider';
+import { useCustomTheme } from '@/src/providers/theme-provider';
 
 // Re-export design tokens for convenient single-source imports
-export { Colors, Fonts, FontSizes, Spacing, Radius, Elevation } from '../../constants/theme';
-export type { ThemeColors } from '../../constants/theme';
+export {
+  Colors,
+  Fonts,
+  FontSizes,
+  Spacing,
+  Radius,
+  Elevation,
+} from '@/src//constants/theme';
+export type { ThemeColors } from '@/src//constants/theme';
 
 export type UIState =
   | 'default'
@@ -30,7 +37,28 @@ export type UIState =
   | 'readonly';
 
 export type UISize = 'small' | 'medium' | 'large';
-export type UIVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'text' | 'danger' | 'filled' | 'elevated' | 'outlined' | 'center' | 'bottom-sheet' | 'full-screen' | 'success' | 'warning' | 'info' | 'neutral' | 'image' | 'initials' | 'icon' | 'horizontal' | 'vertical';
+export type UIVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'text'
+  | 'danger'
+  | 'filled'
+  | 'elevated'
+  | 'outlined'
+  | 'center'
+  | 'bottom-sheet'
+  | 'full-screen'
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'neutral'
+  | 'image'
+  | 'initials'
+  | 'icon'
+  | 'horizontal'
+  | 'vertical';
 
 export interface BaseComponentProps {
   style?: StyleProp<ViewStyle>;

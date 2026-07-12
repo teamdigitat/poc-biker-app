@@ -12,18 +12,18 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-import { useAuth } from '@/providers/auth-provider';
-import { useCustomTheme } from '@/providers/theme-provider';
+import { useAuth } from '@/src/providers/auth-provider';
+import { useCustomTheme } from '@/src/providers/theme-provider';
 
-import { Badge } from '@/components/ui/atoms/Badge';
-import { drawerNavItems } from '@/constants/nav-items';
+import { Badge } from '@/src/components/ui/atoms/Badge';
+import { drawerNavItems } from '@/src/constants/nav-items';
 import {
   Spacing,
   Radius,
   FontSizes,
   Fonts,
   Elevation,
-} from '@/constants/theme';
+} from '@/src/constants/theme';
 
 interface LeftDrawerNavProps {
   user: any; // TODO: narrow this type — waiting on shared User interface

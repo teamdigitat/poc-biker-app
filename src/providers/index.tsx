@@ -3,7 +3,7 @@ import QueryProvider from './query-provider';
 import { AuthProvider } from './auth-provider';
 import { CustomThemeProvider } from './theme-provider';
 
-export const ProviderWrapper = ({ children }: { children: React.ReactNode }) => {
+const ProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryProvider>
       <AuthProvider>

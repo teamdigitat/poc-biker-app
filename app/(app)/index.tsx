@@ -8,9 +8,9 @@ import {
   StatusBar,
 } from 'react-native';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { useAuth } from '@/providers/auth-provider';
-import { useCustomTheme } from '@/providers/theme-provider';
-import { Badge } from '@/components/ui';
+import { useAuth } from '@/src/providers/auth-provider';
+import { useCustomTheme } from '@/src/providers/theme-provider';
+import { Badge } from '@/src/components/ui';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -19,7 +19,7 @@ import {
   FontSizes,
   Fonts,
   Elevation,
-} from '@/constants/theme';
+} from '@/src/constants/theme';
 
 export default function Index() {
   const { user } = useAuth();
@@ -98,7 +98,7 @@ export default function Index() {
               style={styles.popoverCloseButton}
             >
               <Ionicons
-                name="close"
+                name='close'
                 size={16}
                 color={colors.inverseOnSurface}
               />
@@ -118,7 +118,7 @@ export default function Index() {
             ]}
             onPress={openNavSidebar}
           >
-            <Ionicons name="menu-outline" size={26} color={colors.text} />
+            <Ionicons name='menu-outline' size={26} color={colors.text} />
           </TouchableOpacity>
           <Text
             style={[
@@ -133,7 +133,7 @@ export default function Index() {
             style={{ marginLeft: Spacing[2], alignSelf: 'center' }}
           >
             <Badge
-              variant="warning"
+              variant='warning'
               style={{ paddingHorizontal: Spacing[2], paddingVertical: 2 }}
             >
               BETA
@@ -149,7 +149,7 @@ export default function Index() {
             ]}
             onPress={() => setShowQrOptions((prev) => !prev)}
           >
-            <Ionicons name="qr-code-outline" size={22} color={colors.text} />
+            <Ionicons name='qr-code-outline' size={22} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -159,7 +159,7 @@ export default function Index() {
             onPress={() => {}}
           >
             <Ionicons
-              name="notifications-outline"
+              name='notifications-outline'
               size={22}
               color={colors.text}
             />
