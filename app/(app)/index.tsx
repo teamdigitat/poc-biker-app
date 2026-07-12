@@ -27,7 +27,7 @@ export default function Index() {
   const navigation = useNavigation();
 
   const [showQrOptions, setShowQrOptions] = useState(false);
-  const [showTopBanner, setShowTopBanner] = useState(true);
+  const [showBetaPopover, setShowBetaPopover] = useState(false);
   const isDark = theme === 'dark';
 
   const openNavSidebar = () => {
@@ -72,24 +72,39 @@ export default function Index() {
     >
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
 
-      {showTopBanner && (
-        <View
-          style={[styles.topBanner, { backgroundColor: colors.inverseSurface }]}
+      {showBetaPopover && (
+        <TouchableOpacity
+          style={styles.popoverBackdrop}
+          activeOpacity={1}
+          onPress={() => setShowBetaPopover(false)}
         >
-          <View style={styles.topBannerText}>
-            <Badge variant='warning' style={styles.topBannerBadge}>
-              BETA
-            </Badge>
+          <View
+            style={[
+              styles.popoverContent,
+              {
+                backgroundColor: colors.inverseSurface,
+                borderColor: colors.outlineVariant,
+              },
+              Elevation.modal,
+            ]}
+          >
             <Text
-              style={[styles.topBannerCopy, { color: colors.inverseOnSurface }]}
+              style={[styles.popoverText, { color: colors.inverseOnSurface }]}
             >
               We&apos;re listening, learning and leveling up with every input
             </Text>
+            <TouchableOpacity
+              onPress={() => setShowBetaPopover(false)}
+              style={styles.popoverCloseButton}
+            >
+              <Ionicons
+                name="close"
+                size={16}
+                color={colors.inverseOnSurface}
+              />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => setShowTopBanner(false)}>
-            <Ionicons name='close' size={20} color={colors.inverseOnSurface} />
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       )}
 
       <View
@@ -103,7 +118,7 @@ export default function Index() {
             ]}
             onPress={openNavSidebar}
           >
-            <Ionicons name='menu-outline' size={26} color={colors.text} />
+            <Ionicons name="menu-outline" size={26} color={colors.text} />
           </TouchableOpacity>
           <Text
             style={[
@@ -113,6 +128,17 @@ export default function Index() {
           >
             Dashboard
           </Text>
+          <TouchableOpacity
+            onPress={() => setShowBetaPopover((prev) => !prev)}
+            style={{ marginLeft: Spacing[2], alignSelf: 'center' }}
+          >
+            <Badge
+              variant="warning"
+              style={{ paddingHorizontal: Spacing[2], paddingVertical: 2 }}
+            >
+              BETA
+            </Badge>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.headerActions}>
@@ -123,7 +149,7 @@ export default function Index() {
             ]}
             onPress={() => setShowQrOptions((prev) => !prev)}
           >
-            <Ionicons name='qr-code-outline' size={22} color={colors.text} />
+            <Ionicons name="qr-code-outline" size={22} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -133,7 +159,7 @@ export default function Index() {
             onPress={() => {}}
           >
             <Ionicons
-              name='notifications-outline'
+              name="notifications-outline"
               size={22}
               color={colors.text}
             />
@@ -417,30 +443,37 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: -Spacing[2],
   },
-  topBanner: {
+  popoverBackdrop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },
+  popoverContent: {
+    position: 'absolute',
+    top: 60,
+    left: Spacing[6],
+    right: Spacing[6],
+    borderRadius: Radius.md,
+    padding: Spacing[3],
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: Spacing[6],
-    marginTop: Spacing[3],
-    borderRadius: Radius.md,
-    paddingHorizontal: Spacing[4],
-    paddingVertical: Spacing[3],
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    zIndex: 25,
   },
-  topBannerText: {
+  popoverText: {
     flex: 1,
-    marginRight: Spacing[3],
-  },
-  topBannerBadge: {
-    alignSelf: 'flex-start',
-    marginBottom: Spacing[2],
-  },
-  topBannerCopy: {
     fontSize: FontSizes.xs,
     lineHeight: 18,
     fontWeight: '500',
+    marginRight: Spacing[2],
+  },
+  popoverCloseButton: {
+    padding: Spacing[1],
   },
   welcomeRow: {
     flexDirection: 'row',

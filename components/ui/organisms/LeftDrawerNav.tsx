@@ -1,14 +1,29 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { useAuth } from '@/providers/auth-provider';
 import { useCustomTheme } from '@/providers/theme-provider';
 
 import { Badge } from '@/components/ui/atoms/Badge';
 import { drawerNavItems } from '@/constants/nav-items';
-import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';
+import {
+  Spacing,
+  Radius,
+  FontSizes,
+  Fonts,
+  Elevation,
+} from '@/constants/theme';
 
 interface LeftDrawerNavProps {
   user: any; // TODO: narrow this type — waiting on shared User interface
@@ -76,11 +91,7 @@ export function LeftDrawerNav({
                   <Ionicons
                     name={item.icon}
                     size={20}
-                    color={
-                      isActive
-                        ? colors.primary
-                        : colors.onSurfaceVariant
-                    }
+                    color={isActive ? colors.primary : colors.onSurfaceVariant}
                   />
 
                   <View style={styles.labelContainer}>
@@ -98,13 +109,27 @@ export function LeftDrawerNav({
                     </Text>
 
                     {item.comingSoon && (
-                      <Badge variant="warning" style={styles.badge}>
+                      <Badge
+                        variant='warning'
+                        style={[
+                          styles.badge,
+                          { paddingHorizontal: 6, paddingVertical: 2 },
+                        ]}
+                        textStyle={{ fontSize: 6, lineHeight: 12 }}
+                      >
                         Coming Soon
                       </Badge>
                     )}
 
                     {item.underMaintenance && (
-                      <Badge variant="error" style={styles.badge}>
+                      <Badge
+                        variant='error'
+                        style={[
+                          styles.badge,
+                          { paddingHorizontal: 6, paddingVertical: 2 },
+                        ]}
+                        textStyle={{ fontSize: 10, lineHeight: 12 }}
+                      >
                         Maintenance
                       </Badge>
                     )}
@@ -114,7 +139,12 @@ export function LeftDrawerNav({
             })}
           </ScrollView>
 
-          <View style={[styles.actionsSection, { paddingBottom: insets.bottom + Spacing[4] }]}> 
+          <View
+            style={[
+              styles.actionsSection,
+              { paddingBottom: insets.bottom + Spacing[4] },
+            ]}
+          >
             <View
               style={[
                 styles.divider,
@@ -163,7 +193,7 @@ export function LeftDrawerNav({
               onPress={onLogout}
             >
               <Ionicons
-                name="log-out-outline"
+                name='log-out-outline'
                 size={20}
                 color={colors.danger}
               />
