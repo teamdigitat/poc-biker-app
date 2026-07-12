@@ -3,8 +3,8 @@ import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAuth } from '@/components/auth-context';
-import { useCustomTheme } from '@/components/theme-context';
+import { useAuth } from '@/providers/auth-provider';
+import { useCustomTheme } from '@/providers/theme-provider';
 
 import { Badge } from '@/components/ui/atoms/Badge';
 import { drawerNavItems } from '@/constants/nav-items';

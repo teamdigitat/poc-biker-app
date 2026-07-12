@@ -11,8 +11,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Link } from 'expo-router';
-import { useAuth } from '@/components/auth-context';
-import { useCustomTheme } from '@/components/theme-context';
+import { useAuth } from '@/providers/auth-provider';
+import { useCustomTheme } from '@/providers/theme-provider';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';
@@ -143,7 +143,7 @@ export default function LoginScreen() {
 
             <View style={[styles.linkWrapper, { borderTopColor: colors.outlineVariant }]}>
               <Text style={[styles.linkText, { color: colors.onSurfaceVariant }]}>
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
               </Text>
               <Link href="/register" asChild>
                 <TouchableOpacity>

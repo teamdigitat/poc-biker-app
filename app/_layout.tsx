@@ -4,9 +4,10 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import ProviderWrapper from '@/providers';
 
-import { AuthProvider, useAuth } from '@/components/auth-context';
-import { CustomThemeProvider, useCustomTheme } from '@/components/theme-context';
+import { useAuth } from '@/providers/auth-provider';
+import { useCustomTheme } from '@/providers/theme-provider';
 
 function RootLayoutNav() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -71,10 +72,8 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <CustomThemeProvider>
-        <RootLayoutNav />
-      </CustomThemeProvider>
-    </AuthProvider>
+    <ProviderWrapper>
+      <RootLayoutNav />
+    </ProviderWrapper>
   );
 }

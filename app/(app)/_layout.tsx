@@ -1,9 +1,9 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Slot, useRouter } from 'expo-router';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useAuth } from '@/components/auth-context';
-import { useCustomTheme } from '@/components/theme-context';
+import { useAuth } from '@/providers/auth-provider';
+import { useCustomTheme } from '@/providers/theme-provider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LeftDrawerNav } from '@/components/ui/organisms/LeftDrawerNav';

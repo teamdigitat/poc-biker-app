@@ -11,8 +11,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Link } from 'expo-router';
-import { useAuth } from '@/components/auth-context';
-import { useCustomTheme } from '@/components/theme-context';
+import { useAuth } from '@/providers/auth-provider';
+import { useCustomTheme } from '@/providers/theme-provider';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Spacing, Radius, FontSizes, Fonts, Elevation } from '@/constants/theme';

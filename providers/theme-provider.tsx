@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { useColorScheme } from 'react-native';
-import { Colors, type ThemeColors } from '../constants/theme';
+import { Colors } from '../constants/theme';
 import { useThemeStore } from '../store/theme-store';
 
 type ThemeMode = 'light' | 'dark';
@@ -17,7 +17,6 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const systemScheme = useColorScheme() ?? 'light';
   const { theme: storedTheme, toggleTheme } = useThemeStore();
 
-  // Use persisted store preference; falls back to system scheme on first run
   const theme: ThemeMode = storedTheme ?? systemScheme;
   const colors = Colors[theme];
 

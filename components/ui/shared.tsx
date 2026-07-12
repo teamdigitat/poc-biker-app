@@ -1,6 +1,6 @@
 import React from 'react';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { useCustomTheme } from '../theme-context';
+import { useCustomTheme } from '@/providers/theme-provider';
 
 // Re-export design tokens for convenient single-source imports
 export { Colors, Fonts, FontSizes, Spacing, Radius, Elevation } from '../../constants/theme';
