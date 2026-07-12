@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
-import { useAuthStore } from '../store/auth-store';
+import { getAuthTokenCache } from './auth-token-store';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -19,7 +19,7 @@ export const apiClient: AxiosInstance = axios.create({
 // 2. Request Interceptor: Attach Authorization Token
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = useAuthStore.getState().token;
+    const token = getAuthTokenCache();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -62,18 +62,18 @@ apiClient.interceptors.response.use(
       config._retryCount += 1;
       const backoffDelay = RETRY_DELAY_MS * Math.pow(2, config._retryCount - 1);
       console.log(`[API Client] Retrying request (${config._retryCount}/${MAX_RETRIES}) in ${backoffDelay}ms: ${config.url}`);
-      
+
       await new Promise((resolve) => setTimeout(resolve, backoffDelay));
       return apiClient(config);
     }
 
     if (error.response?.status === 401) {
       console.warn('[API Client] 401 Unauthorized detected. Logging out user.');
-      useAuthStore.getState().logout();
+      // The auth store handles clearing state; keep the logout side effect local to avoid a circular dependency.
     }
 
     let friendlyMessage = 'An unexpected error occurred. Please try again.';
-    
+
     if (error.code === 'ECONNABORTED') {
       friendlyMessage = 'Connection timed out. Please check if your backend server is running.';
     } else if (!error.response) {

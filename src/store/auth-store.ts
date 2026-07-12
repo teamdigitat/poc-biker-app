@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { safePersistStorage } from './custom-storage';
 import { apiClient } from '../lib/api-client';
+import { setAuthTokenCache } from '../lib/auth-token-store';
 
 interface User {
   id: string;
@@ -83,6 +84,7 @@ export const useAuthStore = create<AuthState>()(
             user,
             isLoading: false
           });
+          setAuthTokenCache(accessToken);
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -99,6 +101,7 @@ export const useAuthStore = create<AuthState>()(
           console.error('Logout error:', error);
         }
         set({ token: null, refreshToken: null, user: null, deviceId: null });
+        setAuthTokenCache(null);
       },
 
       refreshAccessToken: async () => {
@@ -116,8 +119,10 @@ export const useAuthStore = create<AuthState>()(
             token: accessToken,
             refreshToken: newRefreshToken || refreshToken
           });
+          setAuthTokenCache(accessToken);
         } catch (error) {
           set({ token: null, refreshToken: null, user: null, deviceId: null });
+          setAuthTokenCache(null);
           throw error;
         }
       },
@@ -137,6 +142,7 @@ export const useAuthStore = create<AuthState>()(
             user,
             isLoading: false
           });
+          setAuthTokenCache(accessToken);
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -158,6 +164,7 @@ export const useAuthStore = create<AuthState>()(
             user,
             isLoading: false
           });
+          setAuthTokenCache(accessToken);
         } catch (error) {
           set({ isLoading: false });
           throw error;

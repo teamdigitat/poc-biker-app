@@ -75,10 +75,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={customNavTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='(auth)' />
-        <Stack.Screen name='(app)' />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
     </ThemeProvider>
   );

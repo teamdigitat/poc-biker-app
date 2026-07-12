@@ -38,8 +38,8 @@ export default function LoginScreen() {
   const [loginMode, setLoginMode] = useState<'email' | 'phone'>('email');
 
   // Email/Password States
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@example.com');
+  const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
 
   // Phone OTP States
