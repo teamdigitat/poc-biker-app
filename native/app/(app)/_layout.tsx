@@ -6,8 +6,8 @@ import { useAuth } from '@/components/auth-context';
 import { useCustomTheme } from '@/components/theme-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { LeftDrawerNav } from '@/components/ui/organisms/LeftDrawerNav/LeftDrawerNav';
-import { BottomNavBar } from '@/components/ui/organisms/BottomNavBar/BottomNavBar';
+import { LeftDrawerNav } from '@/components/ui/organisms/LeftDrawerNav';
+import { BottomNavBar } from '@/components/ui/organisms/BottomNavBar';
 
 const Drawer = createDrawerNavigator();
 

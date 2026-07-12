@@ -24,14 +24,16 @@ function RootLayoutNav() {
   useEffect(() => {
     if (!hasMounted || isLoading) return;
 
-    const currentSegment = segments[0] as string | undefined;
-    const inAppGroup = currentSegment === '(app)';
+    const currentSegment = segments[segments.length - 1] as string | undefined;
+    const inAppGroup = segments[0] === '(app)';
+    const isAuthRoute = segments[0] === '(auth)' || currentSegment === 'login' || currentSegment === 'register';
+    const isRootRoute = !segments.length || currentSegment === 'index';
 
     if (!isAuthenticated && inAppGroup) {
       router.replace('/login');
-    } else if (isAuthenticated && (currentSegment === 'login' || currentSegment === 'register')) {
+    } else if (isAuthenticated && isAuthRoute) {
       router.replace('/');
-    } else if (!isAuthenticated && (!currentSegment || currentSegment === 'index')) {
+    } else if (!isAuthenticated && isRootRoute) {
       router.replace('/login');
     }
   }, [isAuthenticated, isLoading, segments, hasMounted]);
@@ -59,8 +61,7 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={customNavTheme}>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="login" />
-        <Stack.Screen name="register" />
+        <Stack.Screen name="(auth)" />
         <Stack.Screen name="(app)" />
       </Stack>
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />

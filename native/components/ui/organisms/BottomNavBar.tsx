@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from './BottomNavBar.styles';
-
+import { StyleSheet } from 'react-native';
 interface BottomNavBarProps {
   bottomNavItems: Array<{ icon: string; active: boolean }>;
   isDark: boolean;
@@ -39,3 +38,40 @@ export function BottomNavBar({ bottomNavItems, isDark, colors, isQuickActionsOpe
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  bottomNavWrapper: {
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.08)',
+  },
+  bottomNavPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 999,
+    padding: 10,
+    gap: 10,
+  },
+  bottomNavButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomNavButtonActive: {
+    backgroundColor: '#EF4444',
+  },
+  bottomNavClose: {
+    width: 52,
+    height: 52,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
